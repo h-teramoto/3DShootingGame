@@ -54,6 +54,9 @@ public class PlayerMouseMoveObserver
                 {
                     _newAngle.y -= (_lastMousePosition.x - Input.mousePosition.x) * _rotationSpeed.y;
                     _newAngle.x -= (Input.mousePosition.y - _lastMousePosition.y) * _rotationSpeed.x;
+                    if(_newAngle.x > 20) _newAngle.x = 20;
+                    if (_newAngle.x < -20) _newAngle.x = -20;
+
                     _playerController.Houdai.transform.localEulerAngles = _newAngle;
                     _lastMousePosition = Input.mousePosition;
                 }

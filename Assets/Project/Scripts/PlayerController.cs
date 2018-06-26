@@ -20,7 +20,10 @@ public class PlayerController : MonoBehaviour {
     public GameObject Laser { get { return _laser; } }
 
     void Start () {
-        new PlayerMouseMoveObserver(this).Observe();
+        PlayerMouseMoveObserver playerMouseMoveObserver 
+            = new PlayerMouseMoveObserver(this);
+        playerMouseMoveObserver.Observe();
+
         new PlayerShootObserver(this).Observe();
     }
 	

@@ -62,7 +62,7 @@ public class PlayerShootObserver : MonoBehaviour
     {
         ScopeDisp(isDisp);
         Scope.transform.position = position;
-        Scope.transform.LookAt(Camera.main.transform);
+        Scope.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
     }
     /// <summary>
     /// 

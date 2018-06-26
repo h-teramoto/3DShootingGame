@@ -29,7 +29,7 @@ public class EnemyHpGaugeObserver
     {
         GameObject hpGauge = GameObject.Instantiate(_hpGaugePrefab);
         hpGauge.transform.position = _enemyController.transform.position + new Vector3(0, 1, 2);
-        hpGauge.transform.LookAt(Camera.main.transform);
+        hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
 
         Slider slider = hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyController.Hp / (float)_enemyController.MaxHp;
