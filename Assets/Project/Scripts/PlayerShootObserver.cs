@@ -6,15 +6,24 @@ public class PlayerShootObserver : MonoBehaviour
 {
     private PlayerController _playerController;
 
-    private GameObject _houdai;
-
-    private GameObject _startPoint;
-
     private GameObject _scopePrefab;
 
-    private GameObject _scope;
+    private PlayerShootService _playerShootService;
 
-    PlayerShootService _playerShootService;
+    private GameObject _scope;
+    private GameObject Scope
+    {
+        get
+        {
+            if (_scope == null)
+            {
+                _scope = GameObject.Instantiate(_scopePrefab);
+            }
+            return _scope;
+        }
+    }
+
+    
 
     /// <summary>
     /// 
@@ -24,9 +33,7 @@ public class PlayerShootObserver : MonoBehaviour
     {
         _playerController = playerController;
         _playerShootService = new PlayerShootService(_playerController);
-        _scopePrefab = Resources.Load("Prefabs/Scope2") as GameObject;
-        _houdai = _playerController.transform.Find("Houdai").gameObject;
-        _startPoint = _houdai.transform.Find("Cylinder/StartPoint").gameObject;
+        _scopePrefab = Resources.Load(ResourceDefine.PREFAB_SCOPE2) as GameObject;
     }
 
     /// <summary>
@@ -43,11 +50,7 @@ public class PlayerShootObserver : MonoBehaviour
     /// <param name="isDisp"></param>
     private void ScopeDisp(bool isDisp)
     {
-        if (_scope == null)
-        {
-            _scope = GameObject.Instantiate(_scopePrefab);
-        }
-        _scope.SetActive(isDisp);
+        Scope.SetActive(isDisp);
     }
 
     /// <summary>
@@ -58,8 +61,8 @@ public class PlayerShootObserver : MonoBehaviour
     private void ScopeDisp(bool isDisp,Vector3 position)
     {
         ScopeDisp(isDisp);
-        _scope.transform.position = position;
-        _scope.transform.LookAt(Camera.main.transform);
+        Scope.transform.position = position;
+        Scope.transform.LookAt(Camera.main.transform);
     }
     /// <summary>
     /// 
@@ -69,11 +72,14 @@ public class PlayerShootObserver : MonoBehaviour
     {
         while (true)
         {
-            Ray ray = new Ray(_startPoint.transform.position, _houdai.transform.forward);
+            Ray ray = new Ray(_playerController.StartPoint.transform.position, _playerController.Houdai.transform.forward);
             RaycastHit hit;
             Debug.DrawRay(ray.origin, ray.direction * 30.0f, Color.red, 0.0f);
 
-            if (Physics.Raycast(ray, out hit, 30.0f))
+            int layerNo = LayerMask.NameToLayer("Bullet");
+            int layerMask = ~(1 << layerNo);
+
+            if (Physics.Raycast(ray, out hit, 30.0f, layerMask))
             {
                 if (hit.collider.tag == TagDefine.TAG_ENEMY) { 
                     ScopeDisp(true, hit.point + new Vector3(0, 0, 0.5f));
@@ -81,14 +87,13 @@ public class PlayerShootObserver : MonoBehaviour
                 else {
                     ScopeDisp(false);
                 }
-
             }
             else
             {
                 ScopeDisp(false);
             }
 
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetMouseButton(1))
             {
                 _playerShootService.Shoot();
                 yield return null;

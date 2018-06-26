@@ -8,19 +8,18 @@ public class PlayerShootService
 
     private GameObject _bullet;
 
-    private GameObject _explosion;
+    
 
-    private GameObject _startPoint;
 
-    private GameObject _houdai;
-
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="playerController"></param>
     public PlayerShootService(PlayerController playerController)
     {
         _playerController = playerController;
-        _bullet = Resources.Load("Prefabs/Bullet") as GameObject;
-        _explosion = Resources.Load("Prefabs/Explosion") as GameObject;
-        _houdai = _playerController.transform.Find("Houdai").gameObject;
-        _startPoint = _houdai.transform.Find("Cylinder/StartPoint").gameObject;
+        _bullet = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_BULLET) as GameObject;
+        
     }
 
     public void Shoot()
@@ -28,11 +27,13 @@ public class PlayerShootService
         Observable.FromCoroutine(Coroutine).Subscribe();
     }
 
+
+
     private IEnumerator Coroutine()
     {
 
         GameObject bullet =  GameObject.Instantiate(_bullet);
-        bullet.transform.position = _startPoint.transform.position;
+        bullet.transform.position = _playerController.StartPoint.transform.position;
 
         NrcEventForwarder forwarder = bullet.GetComponent<NrcEventForwarder>();
         forwarder.OnTriggerEnterEvent += (col) =>
@@ -41,17 +42,15 @@ public class PlayerShootService
 
                 EnemyController enemyController =
                     col.gameObject.GetComponent<EnemyController>();
-                enemyController.Damage(0);
+                enemyController.Damage(20);
 
-                GameObject explosion = GameObject.Instantiate(_explosion);
-                explosion.transform.position = col.gameObject.transform.position;
-
+                
                 GameObject.Destroy(bullet);               
             }
         };
 
         Vector3 force;
-        force = _houdai.transform.forward * 30f;
+        force = _playerController.Houdai.transform.forward * 30f;
         bullet.GetComponent<Rigidbody>().AddForce(force,ForceMode.VelocityChange);
 
         yield return new WaitForSeconds(1);
