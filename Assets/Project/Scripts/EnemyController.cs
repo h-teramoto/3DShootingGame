@@ -11,9 +11,16 @@ public class EnemyController : MonoBehaviour
     public int MaxHp { get { return _maxHp; }}
 
     private EnemyDamageService _enemyDamageService;
+
     private EnemyHpGaugeObserver _enemyHpGaugeObserver;
 
+    public delegate void EnemyDeadDelegate(EnemyController enemyController);
+    public EnemyDeadDelegate EnemyDeadEvent = delegate { };
+
     private GameObject _explosion;
+
+    private EnemyModel _enemyModel;
+
 
     private IEnumerator Explodison(Vector3 position)
     {
@@ -32,18 +39,20 @@ public class EnemyController : MonoBehaviour
         _enemyDamageService = new EnemyDamageService(this);
         _enemyHpGaugeObserver = new EnemyHpGaugeObserver(this, _enemyDamageService);
         _enemyHpGaugeObserver.Display();
+        _explosion = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_EXPLOSION) as GameObject;
 
         _enemyDamageService.EnemyHpChangeEvent += (hp) =>
         {
             _hp = hp;
             if (hp == 0)
             {
+                EnemyDeadEvent(this);
                 Observable.FromCoroutine(observe => Explodison(this.gameObject.transform.position)).Subscribe();
                 Destroy(this.gameObject);
             }
         };
 
-        _explosion = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_EXPLOSION) as GameObject;
+        
     }
 
     public void Damage(int point)

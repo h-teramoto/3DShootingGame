@@ -21,5 +21,6 @@ public class EnemyModel : ScriptableObject
     [SerializeField]
     private GameObject _prefab;
     public GameObject Prefab { get { return _prefab; } }
+    
 
 }

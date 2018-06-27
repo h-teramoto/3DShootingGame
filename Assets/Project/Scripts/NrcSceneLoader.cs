@@ -15,10 +15,18 @@ public class NrcSceneLoader : MonoBehaviour
     private PlayerController _playerController;
     public PlayerController PlayerController { get { return _playerController; } }
 
-    // Use this for initialization
+    [SerializeField]
+    private EnemyDataBase _enemyDataBase;
+    public EnemyDataBase EnemyDataBase { get { return _enemyDataBase; } }
+
+    [SerializeField]
+    private StageDataBase _stageDataBase;
+    public StageDataBase StageDataBase { get { return _stageDataBase; } }
+
+    
     void Awake()
     {
         NrcGameManager.Init(this);
+        NrcGameManager.StageLoad(1);
     }
-
 }
