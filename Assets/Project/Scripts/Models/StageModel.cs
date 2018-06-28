@@ -13,4 +13,9 @@ public class StageModel : ScriptableObject
     [SerializeField]
     private GameObject _prefab;
     public GameObject Prefab { get { return _prefab; } }
+
+    [SerializeField]
+    private int _clearTime;
+    public int ClearTime { get { return _clearTime; } }
+
 }

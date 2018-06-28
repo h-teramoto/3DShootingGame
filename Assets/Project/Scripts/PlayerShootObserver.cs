@@ -93,7 +93,7 @@ public class PlayerShootObserver : MonoBehaviour
                 ScopeDisp(false);
             }
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetMouseButton(1))
+            if (Input.GetKey(KeyCode.A) || Input.GetMouseButton(1))
             {
                 _playerShootService.Shoot();
                 yield return null;
