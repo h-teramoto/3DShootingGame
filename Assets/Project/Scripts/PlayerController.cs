@@ -19,8 +19,42 @@ public class PlayerController : MonoBehaviour {
     private GameObject _laser;
     public GameObject Laser { get { return _laser; } }
 
-    void Start () {
-        new PlayerMouseMoveObserver(this).Observe();
-        new PlayerShootObserver(this).Observe();
+    private PlayerMouseMoveObserver _playerMouseMoveObserver;
+    private PlayerMouseMoveObserver PlayerMouseMoveObserver
+    {
+        get
+        {
+            if(_playerMouseMoveObserver == null)
+            {
+                _playerMouseMoveObserver = new PlayerMouseMoveObserver(this);
+            }
+            return _playerMouseMoveObserver;
+        }
+    }
+
+    private PlayerShootObserver _playerShootObserver;
+    private PlayerShootObserver PlayerShootObserver
+    {
+        get
+        {
+            if(_playerShootObserver == null)
+            {
+                _playerShootObserver = new PlayerShootObserver(this);
+            }
+            return _playerShootObserver;
+        }
+    }
+
+    public void Pause()
+    {
+        PlayerMouseMoveObserver.Destroy();
+        PlayerShootObserver.Destroy();
+    }
+
+    public void Restart()
+    {
+        PlayerMouseMoveObserver.ObserveAsync();
+        PlayerShootObserver.ObserveAsync();
     }
 }
+

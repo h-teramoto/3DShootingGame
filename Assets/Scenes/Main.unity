@@ -209,6 +209,7 @@ MonoBehaviour:
   _mainCamera: {fileID: 282840813}
   _firstPersonCamera: {fileID: 1350402567}
   _playerController: {fileID: 1064578939}
+  _gameUIController: {fileID: 718148039}
   _enemyDataBase: {fileID: 0}
   _stageDataBase: {fileID: 11400000, guid: af02ebd738cd59b4496634854a36b72b, type: 2}
 --- !u!4 &206353587
@@ -545,7 +546,7 @@ GameObject:
   - component: {fileID: 456525560}
   - component: {fileID: 456525559}
   m_Layer: 5
-  m_Name: TextMeshPro Text
+  m_Name: BeforeStartEffectText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -867,6 +868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visualPointChangeButton: {fileID: 1706838817}
+  _beforeStartEffectText: {fileID: 456525559}
 --- !u!1 &905695954
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UniRx;
+using System;
 
 public class PlayerShootService 
 {
@@ -8,8 +9,7 @@ public class PlayerShootService
 
     private GameObject _bullet;
 
-    
-
+    private IDisposable _iDisposable;
 
     /// <summary>
     /// コンストラクタ
@@ -19,19 +19,20 @@ public class PlayerShootService
     {
         _playerController = playerController;
         _bullet = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_BULLET) as GameObject;
-        
     }
 
     public void Shoot()
     {
-        Observable.FromCoroutine(Coroutine).Subscribe();
+        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
     }
 
-
+    public void Destroy()
+    {
+        _iDisposable.Dispose();
+    }
 
     private IEnumerator Coroutine()
     {
-
         GameObject bullet =  GameObject.Instantiate(_bullet);
         bullet.transform.position = _playerController.StartPoint.transform.position;
 
@@ -44,7 +45,6 @@ public class PlayerShootService
                     col.gameObject.GetComponent<EnemyController>();
                 enemyController.Damage(20);
 
-                
                 GameObject.Destroy(bullet);               
             }
         };

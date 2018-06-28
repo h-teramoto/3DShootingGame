@@ -11,7 +11,6 @@ public class EnemyController : MonoBehaviour
     public int MaxHp { get { return _maxHp; }}
 
     private EnemyDamageService _enemyDamageService;
-
     private EnemyHpGaugeObserver _enemyHpGaugeObserver;
 
     public delegate void EnemyDeadDelegate(EnemyController enemyController);
@@ -37,8 +36,10 @@ public class EnemyController : MonoBehaviour
         _hp = 1000;
         _maxHp = 1000;
         _enemyDamageService = new EnemyDamageService(this);
+
         _enemyHpGaugeObserver = new EnemyHpGaugeObserver(this, _enemyDamageService);
-        _enemyHpGaugeObserver.Display();
+        _enemyHpGaugeObserver.DisplayAsync();
+
         _explosion = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_EXPLOSION) as GameObject;
 
         _enemyDamageService.EnemyHpChangeEvent += (hp) =>
@@ -51,7 +52,10 @@ public class EnemyController : MonoBehaviour
                 Destroy(this.gameObject);
             }
         };
+    }
 
+    public void Stop()
+    {
         
     }
 

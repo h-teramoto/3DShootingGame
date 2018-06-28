@@ -2,6 +2,7 @@
 using System.Collections;
 using UniRx;
 using UnityEngine.UI;
+using System;
 
 public class EnemyHpGaugeObserver
 {
@@ -13,6 +14,8 @@ public class EnemyHpGaugeObserver
 
     private Slider _slider;
 
+    private IDisposable _iDisposable;
+
     public EnemyHpGaugeObserver(EnemyController enemyController, EnemyDamageService enemyDamageService)
     {
         _enemyController = enemyController;
@@ -20,9 +23,9 @@ public class EnemyHpGaugeObserver
         _hpGaugePrefab = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_ENEMY_HP_GAUGE) as GameObject;
     }
 
-    public void Display()
+    public void DisplayAsync()
     {
-        Observable.FromCoroutine(Coroutine).Subscribe();
+        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
     }
 
     private IEnumerator Coroutine()
@@ -30,6 +33,7 @@ public class EnemyHpGaugeObserver
         GameObject hpGauge = GameObject.Instantiate(_hpGaugePrefab);
         hpGauge.transform.position = _enemyController.transform.position + new Vector3(0, 1, 2);
         hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
+        //_iDisposable.AddTo(hpGauge);
 
         Slider slider = hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyController.Hp / (float)_enemyController.MaxHp;

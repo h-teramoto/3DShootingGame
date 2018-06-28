@@ -12,6 +12,7 @@ public class NrcGameManager
 
     private NrcGameStageChangeService _nrcGameStageChangeService;
 
+    private StageController _nowStageController;
 
     /// <summary>
     /// 初期化
@@ -22,13 +23,15 @@ public class NrcGameManager
         Instance._nrcSceneLoader = nrcSceneLoader;
         Instance._nrcGameCameraChangeService = new NrcGameCameraChangeService(nrcSceneLoader);
         Instance._nrcGameStageChangeService = new NrcGameStageChangeService(nrcSceneLoader);
+
+        //ステージの読み込み 
+         StageLoad(1);
     }
 
     public static PlayerController GetPlayerController()
     {
         return Instance._nrcSceneLoader.PlayerController;
     }
-
 
     /// <summary>
     /// カメラ視点の切り替え
@@ -53,6 +56,9 @@ public class NrcGameManager
     /// <param name="id"></param>
     public static void StageLoad(int id)
     {
-        Instance._nrcGameStageChangeService.StageLoad(id);
+        Instance._nowStageController =
+            Instance._nrcGameStageChangeService.StageLoad(id);
+
+
     }
 }

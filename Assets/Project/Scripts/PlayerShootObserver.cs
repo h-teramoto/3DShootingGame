@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UniRx;
+using System;
 
 public class PlayerShootObserver : MonoBehaviour
 {
     private PlayerController _playerController;
-
-    private GameObject _scopePrefab;
 
     private PlayerShootService _playerShootService;
 
@@ -17,13 +16,13 @@ public class PlayerShootObserver : MonoBehaviour
         {
             if (_scope == null)
             {
-                _scope = GameObject.Instantiate(_scopePrefab);
+                _scope = GameObject.Instantiate(NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_SCOPE2) as GameObject);
             }
             return _scope;
         }
     }
 
-    
+    private IDisposable _iDisposable;
 
     /// <summary>
     /// 
@@ -33,15 +32,23 @@ public class PlayerShootObserver : MonoBehaviour
     {
         _playerController = playerController;
         _playerShootService = new PlayerShootService(_playerController);
-        _scopePrefab = Resources.Load(ResourceDefine.PREFAB_SCOPE2) as GameObject;
+   }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ObserveAsync()
+    {
+        _iDisposable =  Observable.FromCoroutine(Coroutine).Subscribe();
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public void Observe()
+    public void Destroy()
     {
-        Observable.FromCoroutine(Coroutine).Subscribe();
+        if(_iDisposable != null)
+            _iDisposable.Dispose();
     }
 
     /// <summary>

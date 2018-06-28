@@ -23,6 +23,7 @@ public class PlayerMouseMoveObserver
     // 角度（初期値に0,0を代入）
     private Vector2 _newAngle = new Vector2(0, 0);
 
+    private IDisposable _iDisposable;
 
     public PlayerMouseMoveObserver(PlayerController playerController)
     {
@@ -31,10 +32,17 @@ public class PlayerMouseMoveObserver
         _reverse = false;
     }
 
-    public void Observe()
+    public void ObserveAsync()
     {
-        Observable.FromCoroutine(Coroutine).Subscribe();
+        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
     }
+
+    public void Destroy()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
+    }
+
 
     private IEnumerator Coroutine()
     {
