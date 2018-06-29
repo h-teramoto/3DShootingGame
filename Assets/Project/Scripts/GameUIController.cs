@@ -29,6 +29,11 @@ public class GameUIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ステージ開始前のエフェクト開始
+    /// 終了後　GameUIBeforeStarEffectEndEvent　が発火する
+    /// </summary>
+    /// <param name="stageNo"></param>
     public void BeforeStartEffect(string stageNo)
     {
         GameUIBeforeStarEffectService.StartAsync(stageNo);
@@ -38,16 +43,33 @@ public class GameUIController : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// ステージタイマーの開始
+    /// </summary>
+    public void StageTimerStart()
+    {
+
+    }
+
+    /// <summary>
+    /// ステージクリア時のエフェクト開始
+    /// </summary>
+    public void StageClearEffect()
+    {
+
+    }
+
+    /// <summary>
+    /// スコアの更新
+    /// </summary>
+    /// <param name="score"></param>
+    public void ScoreUpdate(int score)
+    {
+        Debug.Log("得点:" + score);
+    }
 
     void Start()
     {
-        GameUIVisulPointChangeButtonObserver _gameUIVisulPointChangeButtonObserver = new GameUIVisulPointChangeButtonObserver(this);
-        _gameUIVisulPointChangeButtonObserver.Observe();
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-
+        GameUIVisulPointChangeButtonService _gameUIVisulPointChangeButtonObserver = new GameUIVisulPointChangeButtonService(this);
     }
 }

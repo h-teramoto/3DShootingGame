@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NrcGameCameraChangeService
+public class NrcGameCameraService
 {
     public enum CAMERA_MODE
     {
@@ -13,7 +13,7 @@ public class NrcGameCameraChangeService
     private NrcSceneLoader _nrcSceneLoader;
     private CAMERA_MODE _mode;
 
-    public NrcGameCameraChangeService(NrcSceneLoader nrcSceneLoader)
+    public NrcGameCameraService(NrcSceneLoader nrcSceneLoader)
     {
         _playerController = nrcSceneLoader.PlayerController;
         _nrcSceneLoader = nrcSceneLoader;

@@ -31,9 +31,6 @@ public class EnemyHpGaugeObserver
     private IEnumerator Coroutine()
     {
         GameObject hpGauge = GameObject.Instantiate(_hpGaugePrefab);
-        hpGauge.transform.position = _enemyController.transform.position + new Vector3(0, 1, 2);
-        hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
-        //_iDisposable.AddTo(hpGauge);
 
         Slider slider = hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyController.Hp / (float)_enemyController.MaxHp;
@@ -44,9 +41,17 @@ public class EnemyHpGaugeObserver
             if(hp == 0)
             {
                 GameObject.Destroy(hpGauge);
+                _iDisposable.Dispose();
             }
         };
 
-        yield return null;
+        while (true)
+        {
+            hpGauge.transform.position = _enemyController.transform.position + new Vector3(0, 1, 2);
+            hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
+            yield return null;
+        }
+
+        
     }
 }

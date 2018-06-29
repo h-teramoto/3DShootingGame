@@ -4,17 +4,13 @@ using System.Collections;
 /// <summary>
 /// GameUIの視点切替ボタンの監視
 /// </summary>
-public class GameUIVisulPointChangeButtonObserver
+public class GameUIVisulPointChangeButtonService
 {
     private GameUIController _gameUIController;
 
-    public GameUIVisulPointChangeButtonObserver(GameUIController gameUIController)
+    public GameUIVisulPointChangeButtonService(GameUIController gameUIController)
     {
         _gameUIController = gameUIController;
-    }
-
-    public void Observe()
-    {
         _gameUIController.VisualPointChangeButton.onClick.AddListener(TaskOnClick);
     }
 

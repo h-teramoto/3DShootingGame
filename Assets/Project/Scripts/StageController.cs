@@ -10,10 +10,16 @@ public class StageController : MonoBehaviour
     [SerializeField]
     private List<StageEnemySpawnController> _stageEnemySpawnControllerList;
 
+    [SerializeField]
+    private List<EnemyTargetController> _enemyTargetControllerList;
+    public List<EnemyTargetController> EnemyTargetControllerList { get { return _enemyTargetControllerList; } }
+
     private PlayerController _playerController;
 
     public delegate void StageClearDelegate(StageController stageController);
     public StageClearDelegate stageClearEvent = delegate { };
+
+
 
     // Use this for initialization
     void Start()
@@ -21,18 +27,28 @@ public class StageController : MonoBehaviour
         _playerController = NrcGameManager.GetPlayerController();
         _playerController.transform.position = _playerPoint.transform.position;
 
-        //EnemyのSpawn制御
-        foreach(StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
+        foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
         {
+            sesc.spawnEnemyEvent += (e) =>
+            {
 
+            };
         }
-        //
+    }
 
-   }
-
-    // Update is called once per frame
-    void Update()
+    public void Pause()
     {
+        foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
+        {
+            sesc.Pause();
+        }
+    }
 
+    public void Restart()
+    {
+        foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
+        {
+            sesc.Restart();
+        }
     }
 }

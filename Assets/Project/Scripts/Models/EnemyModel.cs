@@ -21,6 +21,9 @@ public class EnemyModel : ScriptableObject
     [SerializeField]
     private GameObject _prefab;
     public GameObject Prefab { get { return _prefab; } }
-    
+
+    [SerializeField]
+    private EnemyActionDefine.ACTION_ID _actionId;
+    public EnemyActionDefine.ACTION_ID ActionId { get { return _actionId; } }
 
 }

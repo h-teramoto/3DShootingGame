@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NrcGameStageChangeService
+public class NrcGameStageService
 {
     private NrcSceneLoader _nrcSceneLoader;
 
@@ -14,9 +14,13 @@ public class NrcGameStageChangeService
     private int _nowStageId;
 
     private GameObject _stageGameObject;
+    private StageController _stageController;
+
+    public delegate void StageChangeDelegate(StageController stageController);
+    public StageChangeDelegate stageChangeEvent = delegate { };
 
 
-    public NrcGameStageChangeService(NrcSceneLoader nrcSceneLoader)
+    public NrcGameStageService(NrcSceneLoader nrcSceneLoader)
     {
         _nrcSceneLoader = nrcSceneLoader;
         _stageDataBase = nrcSceneLoader.StageDataBase;
@@ -25,27 +29,28 @@ public class NrcGameStageChangeService
         _nowStageId = 1; 
     }
 
-    public StageController StageLoad(int id)
+    public void StageLoad(int id)
     {
         if (_stageGameObject != null)
             GameObject.Destroy(_stageGameObject);
 
+        StageModel stageModel = _stageDataBase.GetStageById(id);
+        _stageGameObject = GameObject.Instantiate(stageModel.Prefab);
+        _stageController = _stageGameObject.GetComponent<StageController>();
+        stageChangeEvent(_stageController);
+
         _playerController.Pause();
+        _stageController.Pause();
 
         //ステージスタート前処理
         _gameUIController.BeforeStartEffect(id.ToString());
         _gameUIController.GameUIBeforeStarEffectEndEvent += () =>
         {
             _playerController.Restart();
+            _stageController.Restart();
         };
 
-        StageModel stageModel = _stageDataBase.GetStageById(id);
-        _stageGameObject = GameObject.Instantiate(stageModel.Prefab);
-
         _nowStageId = id;
-
-        return _stageGameObject.GetComponent<StageController>();
-
     }
 
     public int NextStage()
@@ -55,10 +60,9 @@ public class NrcGameStageChangeService
         return _nowStageId;
     }
 
-    
-
-
-
-
+    public StageController GetNowStageController()
+    {
+        return _stageController;
+    }
 
 }

@@ -12,61 +12,58 @@ public class EnemyController : MonoBehaviour
 
     private EnemyDamageService _enemyDamageService;
     private EnemyHpGaugeObserver _enemyHpGaugeObserver;
+    private EnemyActionObserver _enemyMoveObserver;
 
     public delegate void EnemyDeadDelegate(EnemyController enemyController);
     public EnemyDeadDelegate EnemyDeadEvent = delegate { };
 
-    private GameObject _explosion;
-
     private EnemyModel _enemyModel;
+    public EnemyModel EnemyModel { get { return _enemyModel; } }
 
 
-    private IEnumerator Explodison(Vector3 position)
+
+
+    public void Init(EnemyModel enemyModel)
     {
-        GameObject explosion = GameObject.Instantiate(_explosion);
-        explosion.transform.position = position;
+        _enemyModel = enemyModel;
 
-        yield return new WaitForSeconds(1);
+        _hp = enemyModel.Hp;
 
-        GameObject.Destroy(explosion);
-    }
+        _maxHp = _hp;
 
-    void Start()
-    {
-        _hp = 1000;
-        _maxHp = 1000;
         _enemyDamageService = new EnemyDamageService(this);
-
-        _enemyHpGaugeObserver = new EnemyHpGaugeObserver(this, _enemyDamageService);
-        _enemyHpGaugeObserver.DisplayAsync();
-
-        _explosion = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_EXPLOSION) as GameObject;
-
         _enemyDamageService.EnemyHpChangeEvent += (hp) =>
         {
             _hp = hp;
             if (hp == 0)
             {
                 EnemyDeadEvent(this);
-                Observable.FromCoroutine(observe => Explodison(this.gameObject.transform.position)).Subscribe();
+                NrcGameManager.NrcGameScoreService.ScoreUp(enemyModel.Score);
+
                 Destroy(this.gameObject);
             }
         };
+
+        _enemyHpGaugeObserver = new EnemyHpGaugeObserver(this, _enemyDamageService);
+        _enemyHpGaugeObserver.DisplayAsync();
+        
+        _enemyMoveObserver = new EnemyActionObserver(this);
+        _enemyMoveObserver.Observe();
     }
 
-    public void Stop()
-    {
-        
-    }
 
     public void Damage(int point)
     {
         _enemyDamageService.Damage(point);
     }
 
-    void Update()
+    public void Pause()
     {
-        transform.Rotate(new Vector3(2, 1, 5));
+
     }
 
+    public void Restart()
+    {
+
+    }
 }

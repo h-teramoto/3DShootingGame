@@ -1,18 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NrcGameManager
 {
     public static NrcGameManager Instance = new NrcGameManager();
 
-    public NrcSceneLoader _nrcSceneLoader;
-    public NrcSceneLoader NrcSceneLoader { get { return _nrcSceneLoader; } }
+    private NrcSceneLoader _nrcSceneLoader;
+    private NrcSceneLoader NrcSceneLoader { get { return _nrcSceneLoader; } }
 
-    private NrcGameCameraChangeService _nrcGameCameraChangeService;
+    private NrcGameCameraService _nrcGameCameraService;
+    public static NrcGameCameraService NrcGameCameraService { get { return Instance._nrcGameCameraService; } }
 
-    private NrcGameStageChangeService _nrcGameStageChangeService;
+    private NrcGameStageService _nrcGameStageService;
+    public static NrcGameStageService NrcGameStageService { get { return Instance._nrcGameStageService; } }
 
-    private StageController _nowStageController;
+    private NrcGameScoreService _nrcGameScoreService;
+    public static NrcGameScoreService NrcGameScoreService { get { return Instance._nrcGameScoreService; } }
+
+    private NrcGameEnemyService _nrcGameEnemyService;
+    public static NrcGameEnemyService NrcGameEnemyService { get { return Instance._nrcGameEnemyService; } }
+
 
     /// <summary>
     /// 初期化
@@ -21,11 +29,13 @@ public class NrcGameManager
     public static void Init(NrcSceneLoader nrcSceneLoader)
     {
         Instance._nrcSceneLoader = nrcSceneLoader;
-        Instance._nrcGameCameraChangeService = new NrcGameCameraChangeService(nrcSceneLoader);
-        Instance._nrcGameStageChangeService = new NrcGameStageChangeService(nrcSceneLoader);
+        Instance._nrcGameCameraService = new NrcGameCameraService(nrcSceneLoader);
+        Instance._nrcGameStageService = new NrcGameStageService(nrcSceneLoader);
+        Instance._nrcGameScoreService = new NrcGameScoreService(nrcSceneLoader);
+        Instance._nrcGameEnemyService = new NrcGameEnemyService(nrcSceneLoader, Instance._nrcGameStageService);
 
         //ステージの読み込み 
-         StageLoad(1);
+        NrcGameStageService.StageLoad(1);
     }
 
     public static PlayerController GetPlayerController()
@@ -38,7 +48,7 @@ public class NrcGameManager
     /// </summary>
     public static void ChangeCamera()
     {
-        Instance._nrcGameCameraChangeService.Change();
+        Instance._nrcGameCameraService.Change();
     }
 
     /// <summary>
@@ -47,18 +57,19 @@ public class NrcGameManager
     /// <returns>現在アクティブなカメラ</returns>
     public static Camera GetActiveCamera()
     {
-        return Instance._nrcGameCameraChangeService.GetActiveCamera();
+        return Instance._nrcGameCameraService.GetActiveCamera();
     } 
 
     /// <summary>
-    /// ステージをロードする
+    /// 
     /// </summary>
-    /// <param name="id"></param>
-    public static void StageLoad(int id)
+    public static void Pause()
     {
-        Instance._nowStageController =
-            Instance._nrcGameStageChangeService.StageLoad(id);
+        StageController sc = Instance._nrcGameStageService.GetNowStageController();
+        if (sc != null) sc.Pause();
 
+        Instance._nrcSceneLoader.PlayerController.Pause();
 
+        Time.timeScale = 0;
     }
 }

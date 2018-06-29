@@ -9,9 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e217a05a1dd82749a93aeef6ddaeb2a, type: 3}
-  m_Name: Enemy1000
+  m_Name: EnemyCube
   m_EditorClassIdentifier: 
   _id: 1000
   _hp: 500
   _score: 150
   _prefab: {fileID: 1188060731054466, guid: 95820b71193254743bf56a2f58c0ad39, type: 2}
+  _actionId: 1000

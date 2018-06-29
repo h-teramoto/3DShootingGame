@@ -28,6 +28,9 @@ public class StageEnemySpawnController : MonoBehaviour
     private int _spawnTimespan;
     public int SpawnTimespan { get { return _spawnTimespan; } }
 
+    public delegate void SpawnEnemyDelegate(EnemyController enemyController);
+    public SpawnEnemyDelegate spawnEnemyEvent = delegate { };
+
     //管理
     private StageEnemySpawnObserver _stageEnemySpawnObserver;
     private StageEnemySpawnObserver StageEnemySpawnObserver {
@@ -36,6 +39,10 @@ public class StageEnemySpawnController : MonoBehaviour
             if(_stageEnemySpawnObserver == null)
             {
                 _stageEnemySpawnObserver = new StageEnemySpawnObserver(this);
+                _stageEnemySpawnObserver.spawnEnemyEvent += (e) =>
+                {
+                    spawnEnemyEvent(e);
+                };
             }
             return _stageEnemySpawnObserver;
         }
@@ -43,11 +50,11 @@ public class StageEnemySpawnController : MonoBehaviour
 
     public void Pause()
     {
-        
+        StageEnemySpawnObserver.Destroy();
     }
     
     public void Restart()
     {
-
+        StageEnemySpawnObserver.ObserveAsync();
     }
 }
