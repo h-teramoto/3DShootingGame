@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// 
+/// </summary>
 public class GameUIController : MonoBehaviour
 {
     [SerializeField]
@@ -13,11 +16,19 @@ public class GameUIController : MonoBehaviour
     private TextMeshProUGUI _beforeStartEffectText;
     public TextMeshProUGUI BeforeStartEffectText { get { return _beforeStartEffectText; } }
 
+    [SerializeField]
+    private TextMeshProUGUI _countDownText;
+    public TextMeshProUGUI CountDownText { get { return _countDownText; } }
+
+    [SerializeField]
+    private TextMeshProUGUI _scoreText;
+    public TextMeshProUGUI ScoreText { get { return _scoreText; } }
+
     public delegate void GameUIBeforeStarEffectEndDelegate();
     public GameUIBeforeStarEffectEndDelegate GameUIBeforeStarEffectEndEvent = delegate { };
 
     private GameUIBeforeStarEffectService _gameUIBeforeStarEffectService;
-    private GameUIBeforeStarEffectService GameUIBeforeStarEffectService
+    public GameUIBeforeStarEffectService GameUIBeforeStarEffectService
     {
         get
         {
@@ -29,44 +40,40 @@ public class GameUIController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ステージ開始前のエフェクト開始
-    /// 終了後　GameUIBeforeStarEffectEndEvent　が発火する
-    /// </summary>
-    /// <param name="stageNo"></param>
-    public void BeforeStartEffect(string stageNo)
+    private GameUICountDownService _gameUICountDownService;
+    public GameUICountDownService GameUICountDownService {
+        get {
+            if(_gameUICountDownService == null)
+            {
+                _gameUICountDownService = new GameUICountDownService(this);
+            }
+            return _gameUICountDownService;
+        }
+    }
+
+    private GameUIScoreService _gameUIScoreService;
+    public GameUIScoreService GameUIScoreService
     {
-        GameUIBeforeStarEffectService.StartAsync(stageNo);
-        GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
+        get
         {
-            this.GameUIBeforeStarEffectEndEvent();
-        };
+            if (_gameUIScoreService == null)
+            {
+                _gameUIScoreService = new GameUIScoreService(this);
+            }
+            return _gameUIScoreService;
+        }
     }
 
-    /// <summary>
-    /// ステージタイマーの開始
-    /// </summary>
-    public void StageTimerStart()
-    {
-
-    }
-
-    /// <summary>
-    /// ステージクリア時のエフェクト開始
-    /// </summary>
-    public void StageClearEffect()
-    {
-
-    }
+    
 
     /// <summary>
     /// スコアの更新
     /// </summary>
     /// <param name="score"></param>
-    public void ScoreUpdate(int score)
-    {
-        Debug.Log("得点:" + score);
-    }
+    //public void ScoreUpdate(int score)
+    //{
+    //    Debug.Log("得点:" + score);
+    //}
 
     void Start()
     {

@@ -18,7 +18,7 @@ public class NrcGameScoreService
     public void ScoreUp(int score)
     {
         _score += score;
-        _gameUIController.ScoreUpdate(_score);
+        _gameUIController.GameUIScoreService.ScoreUpdate(_score);
     }
 
     public int GetScore()

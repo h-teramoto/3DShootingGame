@@ -43,11 +43,19 @@ public class NrcGameStageService
         _stageController.Pause();
 
         //ステージスタート前処理
-        _gameUIController.BeforeStartEffect(id.ToString());
-        _gameUIController.GameUIBeforeStarEffectEndEvent += () =>
+        _gameUIController.GameUIBeforeStarEffectService.StartAsync(id.ToString());
+        _gameUIController.GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
         {
             _playerController.Restart();
             _stageController.Restart();
+
+            //カウントダウンスタート
+            Debug.Log("カウントダウンスタート");
+            _gameUIController.GameUICountDownService.StartAsync(stageModel.ClearTime);
+            _gameUIController.GameUICountDownService.GameUICountDownEndEvent += () =>
+            {
+                Debug.Log("Clear");
+            };
         };
 
         _nowStageId = id;

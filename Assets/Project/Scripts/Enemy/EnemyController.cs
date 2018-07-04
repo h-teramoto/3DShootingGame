@@ -20,9 +20,6 @@ public class EnemyController : MonoBehaviour
     private EnemyModel _enemyModel;
     public EnemyModel EnemyModel { get { return _enemyModel; } }
 
-
-
-
     public void Init(EnemyModel enemyModel)
     {
         _enemyModel = enemyModel;
