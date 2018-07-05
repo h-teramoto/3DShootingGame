@@ -48,6 +48,7 @@ public class EnemyHpGaugeObserver
 
         while (true)
         {
+            if (hpGauge == null) yield break;
             hpGauge.transform.position = _enemyController.transform.position + new Vector3(0, 1, 2);
             hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
             yield return null;

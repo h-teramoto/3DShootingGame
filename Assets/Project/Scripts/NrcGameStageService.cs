@@ -31,10 +31,34 @@ public class NrcGameStageService
 
     public void StageLoad(int id)
     {
-        if (_stageGameObject != null)
-            GameObject.Destroy(_stageGameObject);
-
         StageModel stageModel = _stageDataBase.GetStageById(id);
+
+        if (_stageGameObject != null)
+        {
+            GameObject.Destroy(_stageGameObject);
+        }
+        else
+        {
+            _gameUIController.GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
+            {
+                _playerController.Restart();
+                _stageController.Restart();
+
+                //カウントダウンスタート
+                Debug.Log("カウントダウンスタート");
+                _gameUIController.GameUICountDownService.StartAsync(stageModel.ClearTime);
+                _gameUIController.GameUICountDownService.GameUICountDownEndEvent += () =>
+                {
+                    //クリア
+                    _gameUIController.GameUIStageClearEffectService.StartAsync();
+                    _gameUIController.GameUIStageClearEffectService.GameUIStageClearEffectEndEvent += () =>
+                    {
+                        NextStage();
+                    };
+                };
+            };
+        }
+            
         _stageGameObject = GameObject.Instantiate(stageModel.Prefab);
         _stageController = _stageGameObject.GetComponent<StageController>();
         stageChangeEvent(_stageController);
@@ -44,24 +68,7 @@ public class NrcGameStageService
 
         //ステージスタート前処理
         _gameUIController.GameUIBeforeStarEffectService.StartAsync(id.ToString());
-        _gameUIController.GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
-        {
-            _playerController.Restart();
-            _stageController.Restart();
 
-            //カウントダウンスタート
-            Debug.Log("カウントダウンスタート");
-            _gameUIController.GameUICountDownService.StartAsync(stageModel.ClearTime);
-            _gameUIController.GameUICountDownService.GameUICountDownEndEvent += () =>
-            {
-                //クリア
-                _gameUIController.GameUIStageClearEffectService.StartAsync();
-                _gameUIController.GameUIStageClearEffectService.GameUIStageClearEffectEndEvent += () =>
-                {
-                    NextStage();
-                };
-            };
-        };
 
         _nowStageId = id;
     }

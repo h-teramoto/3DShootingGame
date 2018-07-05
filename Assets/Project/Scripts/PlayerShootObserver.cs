@@ -31,6 +31,7 @@ public class PlayerShootObserver : MonoBehaviour
     public PlayerShootObserver(PlayerController playerController)
     {
         _playerController = playerController;
+        if(_playerShootService == null)
         _playerShootService = new PlayerShootService(_playerController);
    }
 
@@ -84,9 +85,7 @@ public class PlayerShootObserver : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction * 30.0f, Color.red, 0.0f);
 
             int layerNo = LayerMask.NameToLayer("Bullet");
-            int layerNo2 = LayerMask.NameToLayer("EnemySpawn");
             int layerMask = ~(1 << layerNo);
-            layerMask = ~(1 << layerNo2);
 
             if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
             {

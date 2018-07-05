@@ -50,7 +50,7 @@ public class PlayerShootService
         };
 
         Vector3 force;
-        force = _playerController.Houdai.transform.forward * 30f;
+        force = _playerController.Houdai.transform.forward * 100f;
         bullet.GetComponent<Rigidbody>().AddForce(force,ForceMode.VelocityChange);
 
         yield return new WaitForSeconds(2);
