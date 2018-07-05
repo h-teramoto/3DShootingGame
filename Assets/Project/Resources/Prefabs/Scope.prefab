@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4435480989648028}
   - component: {fileID: 212235794071949546}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
