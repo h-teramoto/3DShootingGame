@@ -43,7 +43,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
 
         while (true)
         {
-            _enemyController.transform.Rotate(new Vector3(5, 6, 7));
+            //_enemyController.transform.Rotate(new Vector3(5, 6, 7));
             yield return null;
         }
     }

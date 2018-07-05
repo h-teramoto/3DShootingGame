@@ -30,7 +30,8 @@ public class EnemyHpGaugeObserver
 
     private IEnumerator Coroutine()
     {
-        GameObject hpGauge = GameObject.Instantiate(_hpGaugePrefab);
+        GameObject hpGauge = GameObject.Instantiate(_hpGaugePrefab, 
+            NrcGameManager.NrcGameStageService.GetNowStageController().transform);
 
         Slider slider = hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyController.Hp / (float)_enemyController.MaxHp;

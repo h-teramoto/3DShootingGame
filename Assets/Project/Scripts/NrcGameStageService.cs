@@ -54,7 +54,12 @@ public class NrcGameStageService
             _gameUIController.GameUICountDownService.StartAsync(stageModel.ClearTime);
             _gameUIController.GameUICountDownService.GameUICountDownEndEvent += () =>
             {
-                Debug.Log("Clear");
+                //クリア
+                _gameUIController.GameUIStageClearEffectService.StartAsync();
+                _gameUIController.GameUIStageClearEffectService.GameUIStageClearEffectEndEvent += () =>
+                {
+                    NextStage();
+                };
             };
         };
 
@@ -63,6 +68,9 @@ public class NrcGameStageService
 
     public int NextStage()
     {
+        _playerController.Pause();
+        _stageController.Pause();
+
         _nowStageId++;
         StageLoad(_nowStageId);
         return _nowStageId;

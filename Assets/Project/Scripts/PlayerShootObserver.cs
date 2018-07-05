@@ -84,12 +84,19 @@ public class PlayerShootObserver : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction * 30.0f, Color.red, 0.0f);
 
             int layerNo = LayerMask.NameToLayer("Bullet");
+            int layerNo2 = LayerMask.NameToLayer("EnemySpawn");
             int layerMask = ~(1 << layerNo);
+            layerMask = ~(1 << layerNo2);
 
-            if (Physics.Raycast(ray, out hit, 30.0f, layerMask))
+            if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
             {
-                if (hit.collider.tag == TagDefine.TAG_ENEMY) { 
-                    ScopeDisp(true, hit.point + new Vector3(0, 0, 0.5f));
+            //if (Physics.SphereCast(_playerController.StartPoint.transform.position
+            //    ,3, _playerController.Houdai.transform.forward, out hit,50.0f))
+            //{
+                if (hit.collider.tag == TagDefine.TAG_ENEMY) {
+
+                    Debug.Log("target");
+                    ScopeDisp(true, hit.point - NrcGameManager.GetActiveCamera().transform.forward);
                 }
                 else {
                     ScopeDisp(false);

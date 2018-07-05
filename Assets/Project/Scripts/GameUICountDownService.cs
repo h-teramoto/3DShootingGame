@@ -31,12 +31,13 @@ public class GameUICountDownService
 
     private IEnumerator Coroutine()
     {
-        for (int i = _countNo; i >= 0; i--)
+        for (int i = _countNo; i >= 1; i--)
         {
             _countDownText.text = i.ToString();
             yield return new WaitForSeconds(1.0f);
         }
 
         GameUICountDownEndEvent();
+        _countDownText.text = "";
     }
 }

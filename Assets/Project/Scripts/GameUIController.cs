@@ -27,16 +27,29 @@ public class GameUIController : MonoBehaviour
     public delegate void GameUIBeforeStarEffectEndDelegate();
     public GameUIBeforeStarEffectEndDelegate GameUIBeforeStarEffectEndEvent = delegate { };
 
-    private GameUIBeforeStarEffectService _gameUIBeforeStarEffectService;
-    public GameUIBeforeStarEffectService GameUIBeforeStarEffectService
+    private GameUIBeforeStartEffectService _gameUIBeforeStarEffectService;
+    public GameUIBeforeStartEffectService GameUIBeforeStarEffectService
     {
         get
         {
             if (_gameUIBeforeStarEffectService == null)
             {
-                _gameUIBeforeStarEffectService = new GameUIBeforeStarEffectService(this);
+                _gameUIBeforeStarEffectService = new GameUIBeforeStartEffectService(this);
             }
             return _gameUIBeforeStarEffectService;
+        }
+    }
+
+    private GameUIStageClearEffectService _gameUIStageClearEffectService;
+    public GameUIStageClearEffectService GameUIStageClearEffectService
+    {
+        get
+        {
+            if (_gameUIStageClearEffectService == null)
+            {
+                _gameUIStageClearEffectService = new GameUIStageClearEffectService(this);
+            }
+            return _gameUIStageClearEffectService;
         }
     }
 

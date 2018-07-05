@@ -53,7 +53,7 @@ public class PlayerShootService
         force = _playerController.Houdai.transform.forward * 30f;
         bullet.GetComponent<Rigidbody>().AddForce(force,ForceMode.VelocityChange);
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
 
         GameObject.Destroy(bullet);
 

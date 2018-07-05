@@ -50,7 +50,8 @@ public class StageEnemySpawnObserver
 
     private void Spawn()
     {
-        GameObject enemy = GameObject.Instantiate(_stageEnemySpawnController.EnemyModel.Prefab);
+        GameObject enemy = GameObject.Instantiate(_stageEnemySpawnController.EnemyModel.Prefab, 
+            NrcGameManager.NrcGameStageService.GetNowStageController().transform);
 
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.transform.position = this.GetRandamSpawnPosition();
