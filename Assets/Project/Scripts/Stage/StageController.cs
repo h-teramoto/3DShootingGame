@@ -10,20 +10,33 @@ public class StageController : MonoBehaviour
     [SerializeField]
     private List<StageEnemySpawnController> _stageEnemySpawnControllerList;
 
+   
     [SerializeField]
-    private List<EnemyTargetController> _enemyTargetControllerList;
-    public List<EnemyTargetController> EnemyTargetControllerList { get { return _enemyTargetControllerList; } }
+    private List<EnemyTargetPointController> _enemyTargetPointControllerList;
+    public List<EnemyTargetPointController> EnemyTargetPointControllerList { get { return _enemyTargetPointControllerList; } }
+
 
     private PlayerController _playerController;
 
     public delegate void StageClearDelegate(StageController stageController);
     public StageClearDelegate stageClearEvent = delegate { };
 
-
-
-    // Use this for initialization
-    void Start()
+    private StageEnemyTargetObserver _stageEnemyTargetObserver;
+    public StageEnemyTargetObserver StageEnemyTargetObserver
     {
+        get
+        {
+            if(_stageEnemyTargetObserver == null)
+            {
+                _stageEnemyTargetObserver = new StageEnemyTargetObserver(this);
+            }
+            return _stageEnemyTargetObserver;
+        }
+    }
+
+    public void Init()
+    {
+    
         _playerController = NrcGameManager.GetPlayerController();
         _playerController.transform.position = _playerPoint.transform.position;
 
@@ -36,8 +49,17 @@ public class StageController : MonoBehaviour
         }
     }
 
+
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
     public void Pause()
     {
+        StageEnemyTargetObserver.Destroy();
+
         foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
         {
             sesc.Pause();
@@ -46,6 +68,8 @@ public class StageController : MonoBehaviour
 
     public void Restart()
     {
+        StageEnemyTargetObserver.ObserveAsync();
+
         foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
         {
             sesc.Restart();

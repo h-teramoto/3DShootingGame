@@ -8,7 +8,7 @@ public class EnemyTargetModel : ScriptableObject
 {
     [SerializeField]
     private int _id;
-    public int Id { get { return Id; } }
+    public int Id { get { return _id; } }
 
     [SerializeField]
     private int _hp;

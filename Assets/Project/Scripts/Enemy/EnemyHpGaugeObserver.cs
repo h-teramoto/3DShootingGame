@@ -10,16 +10,13 @@ public class EnemyHpGaugeObserver
 
     private GameObject _hpGaugePrefab;
 
-    private EnemyDamageService _enemyDamageService;
-
     private Slider _slider;
 
     private IDisposable _iDisposable;
 
-    public EnemyHpGaugeObserver(EnemyController enemyController, EnemyDamageService enemyDamageService)
+    public EnemyHpGaugeObserver(EnemyController enemyController)
     {
         _enemyController = enemyController;
-        _enemyDamageService = enemyDamageService;
         _hpGaugePrefab = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_ENEMY_HP_GAUGE) as GameObject;
     }
 
@@ -36,7 +33,7 @@ public class EnemyHpGaugeObserver
         Slider slider = hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyController.Hp / (float)_enemyController.MaxHp;
 
-        _enemyDamageService.EnemyHpChangeEvent += (hp) =>
+        _enemyController.EnemyDamageService.EnemyHpChangeEvent += (hp) =>
         {
             slider.value = (float)hp / (float)_enemyController.MaxHp;
             if(hp == 0)

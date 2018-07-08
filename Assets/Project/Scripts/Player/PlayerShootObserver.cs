@@ -94,8 +94,8 @@ public class PlayerShootObserver : MonoBehaviour
             //{
                 if (hit.collider.tag == TagDefine.TAG_ENEMY) {
 
-                    Debug.Log("target");
-                    ScopeDisp(true, hit.point - NrcGameManager.GetActiveCamera().transform.forward);
+                    //Debug.Log("target");
+                    ScopeDisp(true, hit.point - _playerController.Houdai.transform.forward);
                 }
                 else {
                     ScopeDisp(false);
