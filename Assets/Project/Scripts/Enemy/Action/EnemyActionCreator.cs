@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// 
+/// </summary>
 public class EnemyActionCreator
 {
     public static IEnemyActionObserver GetInstance(EnemyActionDefine.ACTION_ID id)

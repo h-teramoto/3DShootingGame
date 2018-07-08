@@ -31,6 +31,5 @@ public class NrcSceneLoader : MonoBehaviour
     void Awake()
     {
         NrcGameManager.Init(this);
-        
     }
 }
