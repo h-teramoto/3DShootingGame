@@ -59,6 +59,8 @@ public class NrcGameStageService
         _clearTime = stageModel.ClearTime;
         _stageGameObject = GameObject.Instantiate(stageModel.Prefab);
         _stageController = _stageGameObject.GetComponent<StageController>();
+        _stageController.Init();
+
         stageChangeEvent(_stageController);
 
         _playerController.Pause();

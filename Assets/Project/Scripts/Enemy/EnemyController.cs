@@ -5,14 +5,49 @@ using UniRx;
 public class EnemyController : MonoBehaviour
 {
     private int _hp;
-    public int Hp { get { return _hp; }}
+    public int Hp { get { return _hp; } }
 
     private int _maxHp;
-    public int MaxHp { get { return _maxHp; }}
+    public int MaxHp { get { return _maxHp; } }
 
     private EnemyDamageService _enemyDamageService;
+    public EnemyDamageService EnemyDamageService{
+        get
+        {
+            if(_enemyDamageService == null)
+            {
+                _enemyDamageService = new EnemyDamageService(this);
+            }
+            return _enemyDamageService;
+        }
+    }
+
     private EnemyHpGaugeObserver _enemyHpGaugeObserver;
+    public EnemyHpGaugeObserver EnemyHpGaugeObserver
+    {
+        get
+        {
+            if(_enemyHpGaugeObserver == null)
+            {
+                _enemyHpGaugeObserver = new EnemyHpGaugeObserver(this);
+            }
+            return _enemyHpGaugeObserver;
+        }
+    }
+
     private EnemyActionObserver _enemyMoveObserver;
+    public EnemyActionObserver EnemyActionObserver
+    {
+        get
+        {
+            if(_enemyMoveObserver == null)
+            {
+                _enemyMoveObserver = new EnemyActionObserver(this);
+            }
+            return _enemyMoveObserver;
+        }
+    }
+
 
     public delegate void EnemyDeadDelegate(EnemyController enemyController);
     public EnemyDeadDelegate EnemyDeadEvent = delegate { };
@@ -28,8 +63,7 @@ public class EnemyController : MonoBehaviour
 
         _maxHp = _hp;
 
-        _enemyDamageService = new EnemyDamageService(this);
-        _enemyDamageService.EnemyHpChangeEvent += (hp) =>
+        EnemyDamageService.EnemyHpChangeEvent += (hp) =>
         {
             _hp = hp;
             if (hp == 0)
@@ -40,18 +74,15 @@ public class EnemyController : MonoBehaviour
                 Destroy(this.gameObject);
             }
         };
-
-        _enemyHpGaugeObserver = new EnemyHpGaugeObserver(this, _enemyDamageService);
-        _enemyHpGaugeObserver.DisplayAsync();
-        
-        _enemyMoveObserver = new EnemyActionObserver(this);
-        _enemyMoveObserver.Observe();
+    
+        EnemyHpGaugeObserver.DisplayAsync();
+        EnemyActionObserver.Observe();
     }
 
 
     public void Damage(int point)
     {
-        _enemyDamageService.Damage(point);
+        EnemyDamageService.Damage(point);
     }
 
     public void Pause()

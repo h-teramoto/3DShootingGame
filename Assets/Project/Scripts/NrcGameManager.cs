@@ -21,6 +21,11 @@ public class NrcGameManager
     private NrcGameEnemyService _nrcGameEnemyService;
     public static NrcGameEnemyService NrcGameEnemyService { get { return Instance._nrcGameEnemyService; } }
 
+    private NrcGameDatabaseService _nrcGameDatabaseService;
+    public static NrcGameDatabaseService NrcGameDatabaseService { get { return Instance._nrcGameDatabaseService; } }
+
+    
+
 
     /// <summary>
     /// 初期化
@@ -33,6 +38,8 @@ public class NrcGameManager
         Instance._nrcGameStageService = new NrcGameStageService(nrcSceneLoader);
         Instance._nrcGameScoreService = new NrcGameScoreService(nrcSceneLoader);
         Instance._nrcGameEnemyService = new NrcGameEnemyService(nrcSceneLoader, Instance._nrcGameStageService);
+        Instance._nrcGameDatabaseService = new NrcGameDatabaseService(nrcSceneLoader);
+
 
         //ステージの読み込み 
         NrcGameStageService.StageLoad(1);

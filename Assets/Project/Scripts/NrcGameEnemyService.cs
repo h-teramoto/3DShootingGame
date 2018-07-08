@@ -24,8 +24,9 @@ public class NrcGameEnemyService
         EnemyTargetController result = null;
         float tempDistance = float.MaxValue;
 
-        foreach (EnemyTargetController etc in _nrcGameStageService.GetNowStageController().EnemyTargetControllerList)
+        foreach (EnemyTargetController etc in _nrcGameStageService.GetNowStageController().StageEnemyTargetObserver.EnemyTargetControllerList)
         {
+            
             float distance = (etc.transform.position - enemyController.transform.position).sqrMagnitude;
             if (tempDistance > distance)
             {

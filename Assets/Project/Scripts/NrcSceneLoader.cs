@@ -27,7 +27,11 @@ public class NrcSceneLoader : MonoBehaviour
     private StageDataBase _stageDataBase;
     public StageDataBase StageDataBase { get { return _stageDataBase; } }
 
-    
+    [SerializeField]
+    private EnemyTargetDataBase _enemyTargetDataBase;
+    public EnemyTargetDataBase EnemyTargetDataBase { get { return _enemyTargetDataBase; } }
+
+
     void Awake()
     {
         NrcGameManager.Init(this);
