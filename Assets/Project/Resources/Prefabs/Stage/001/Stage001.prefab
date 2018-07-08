@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4047423204892564}
-  - component: {fileID: 114076359075683122}
+  - component: {fileID: 114384292606558874}
   m_Layer: 0
   m_Name: Stage001
   m_TagString: Untagged
@@ -826,22 +826,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 15, y: 0.51, z: 15}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114076359075683122
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1308006743607232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfddd3bb50b5eaf46a25a15f03701bdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerPoint: {fileID: 1382043974517686}
-  _stageEnemySpawnControllerList:
-  - {fileID: 114581861990594062}
-  _enemyTargetPointControllerList:
-  - {fileID: 114347667336387994}
 --- !u!114 &114347667336387994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -854,6 +838,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1000
+--- !u!114 &114384292606558874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1308006743607232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7c6f7835d8f8e40865001be53ecf8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPoint: {fileID: 1382043974517686}
+  _stageEnemySpawnControllerList:
+  - {fileID: 114581861990594062}
+  _enemyTargetPointControllerList:
+  - {fileID: 114347667336387994}
 --- !u!114 &114581861990594062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -862,11 +862,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1823344351511792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67a6b943818965144b969d16c6486faa, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e05ee9e8a5254b42a516d069d9e467f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnProbability: 100
   _enemyModel: {fileID: 11400000, guid: c8d5e890aa554474f94c4daa67936aaa, type: 2}
   _maxSpawnCount: 10
   _numOfOccurrencesAtOnce: 1
-  _spawnTimespan: 3
+  _spawnTimespan: 1

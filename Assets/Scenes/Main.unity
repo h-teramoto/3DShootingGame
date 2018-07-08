@@ -1021,7 +1021,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 718148034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34ddd223ebaf6fb44a942852dbb459f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 5df784a9f7049ee42ad7c3862bb0d1e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _visualPointChangeButton: {fileID: 1706838817}
@@ -1294,7 +1294,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1064578937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2335f6210a691742bbb298d7386b641, type: 3}
+  m_Script: {fileID: 11500000, guid: 529a9720658e7bb45bae07aa74c443d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _houdai: {fileID: 220332793}
