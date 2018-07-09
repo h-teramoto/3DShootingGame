@@ -7,8 +7,6 @@ public class PlayerShootObserver : MonoBehaviour
 {
     private PlayerController _playerController;
 
-    private PlayerShootService _playerShootService;
-
     private GameObject _scope;
     private GameObject Scope
     {
@@ -16,7 +14,7 @@ public class PlayerShootObserver : MonoBehaviour
         {
             if (_scope == null)
             {
-                _scope = GameObject.Instantiate(NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_SCOPE2) as GameObject);
+                _scope = GameObject.Instantiate(NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_SCOPE2) as GameObject, _playerController.transform);
             }
             return _scope;
         }
@@ -31,9 +29,7 @@ public class PlayerShootObserver : MonoBehaviour
     public PlayerShootObserver(PlayerController playerController)
     {
         _playerController = playerController;
-        if(_playerShootService == null)
-        _playerShootService = new PlayerShootService(_playerController);
-   }
+     }
 
     /// <summary>
     /// 
@@ -89,12 +85,8 @@ public class PlayerShootObserver : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 1000.0f, layerMask))
             {
-            //if (Physics.SphereCast(_playerController.StartPoint.transform.position
-            //    ,3, _playerController.Houdai.transform.forward, out hit,50.0f))
-            //{
                 if (hit.collider.tag == TagDefine.TAG_ENEMY) {
 
-                    //Debug.Log("target");
                     ScopeDisp(true, hit.point - _playerController.Houdai.transform.forward);
                 }
                 else {
@@ -108,7 +100,7 @@ public class PlayerShootObserver : MonoBehaviour
 
             if (Input.GetKey(KeyCode.A) || Input.GetMouseButton(1))
             {
-                _playerShootService.Shoot();
+                _playerController.PlayerShootService.Shoot();
                 yield return null;
             }
 

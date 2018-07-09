@@ -10,11 +10,9 @@ public class StageController : MonoBehaviour
     [SerializeField]
     private List<StageEnemySpawnController> _stageEnemySpawnControllerList;
 
-   
     [SerializeField]
     private List<EnemyTargetPointController> _enemyTargetPointControllerList;
     public List<EnemyTargetPointController> EnemyTargetPointControllerList { get { return _enemyTargetPointControllerList; } }
-
 
     private PlayerController _playerController;
 
@@ -47,13 +45,6 @@ public class StageController : MonoBehaviour
 
             };
         }
-    }
-
-
-    // Use this for initialization
-    void Start()
-    {
-
     }
 
     public void Pause()

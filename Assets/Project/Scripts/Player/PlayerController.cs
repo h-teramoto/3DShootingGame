@@ -45,6 +45,19 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    private PlayerShootService _playerShootService;
+    public PlayerShootService PlayerShootService
+    {
+        get
+        {
+            if(_playerShootService == null)
+            {
+                _playerShootService = new PlayerShootService(this);
+            }
+            return _playerShootService;
+        }
+    }
+
     public void Pause()
     {
         PlayerMouseMoveObserver.Destroy();
