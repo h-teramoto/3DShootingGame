@@ -4,7 +4,7 @@ using System;
 using UniRx;
 using System.Collections.Generic;
 
-public class StageEnemyTargetObserver
+public class StageEnemyTargetObserver : INrcObserver
 {
     private StageController _stageController;
 
@@ -16,31 +16,10 @@ public class StageEnemyTargetObserver
     public StageEnemyTargetObserver(StageController stageController)
     {
         _stageController = stageController;
-         
-
-    }
-
-    public void ObserveAsync()
-    {
-        _enemyTargetControllerList = new List<EnemyTargetController>();
         _stageController = NrcGameManager.NrcGameStageService.GetNowStageController();
-        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
-    }
-
-    public void Destroy()
-    {
-        if (_iDisposable != null)
-            _iDisposable.Dispose();
-    }
-
-    private IEnumerator Coroutine()
-    {
-        Debug.Log(_stageController.EnemyTargetPointControllerList.Count);
 
         foreach (EnemyTargetPointController enemyTargetPointController in _stageController.EnemyTargetPointControllerList)
         {
-            Debug.Log("EnemyTargetPointController");
-
             EnemyTargetModel enemyTargetModel = NrcGameManager.NrcGameDatabaseService.GetEnemyTargetModelById(enemyTargetPointController.Id);
 
             GameObject enemyTarget = GameObject.Instantiate(enemyTargetModel.Prefab,
@@ -52,7 +31,34 @@ public class StageEnemyTargetObserver
 
             _enemyTargetControllerList.Add(enemyTargetController);
         }
+    }
 
-        yield return null;
+    public void BeginningAsync()
+    {
+        foreach(EnemyTargetController enemyTargetController in _enemyTargetControllerList)
+        {
+            enemyTargetController.Beginning();
+        }
+
+        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
+    }
+
+    public void Pause()
+    {
+        foreach (EnemyTargetController enemyTargetController in _enemyTargetControllerList)
+        {
+            enemyTargetController.Pause();
+        }
+
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
+    }
+
+    private IEnumerator Coroutine()
+    {
+        while (true)
+        {
+            yield return null;
+        }
     }
 }

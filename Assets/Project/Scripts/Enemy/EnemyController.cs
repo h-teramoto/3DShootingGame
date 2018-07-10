@@ -2,7 +2,7 @@
 using System.Collections;
 using UniRx;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, INrcController
 {
     private int _hp;
     public int Hp { get { return _hp; } }
@@ -75,8 +75,7 @@ public class EnemyController : MonoBehaviour
             }
         };
     
-        EnemyHpGaugeObserver.DisplayAsync();
-        EnemyActionObserver.Observe();
+
     }
 
 
@@ -87,11 +86,13 @@ public class EnemyController : MonoBehaviour
 
     public void Pause()
     {
-
+        EnemyHpGaugeObserver.Pause();
+        EnemyActionObserver.Pause();
     }
 
-    public void Restart()
+    public void Beginning()
     {
-
+        EnemyHpGaugeObserver.BeginningAsync();
+        EnemyActionObserver.BeginningAsync();
     }
 }

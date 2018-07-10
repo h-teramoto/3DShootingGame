@@ -4,7 +4,7 @@ using System;
 using UniRx;
 using System.Collections.Generic;
 
-public class StageEnemySpawnObserver
+public class StageEnemySpawnObserver : INrcObserver
 {
     private StageEnemySpawnController _stageEnemySpawnController;
 
@@ -24,13 +24,23 @@ public class StageEnemySpawnObserver
         _areaBoxCollider = stageEnemySpawnController.GetComponent<BoxCollider>();
     }
 
-    public void ObserveAsync()
-    {    
+    public void BeginningAsync()
+    {
+        foreach (EnemyController enemyController in _enemyList)
+        {
+            enemyController.Beginning();
+        }
+
         _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
     }
 
-    public void Destroy()
+    public void Pause()
     {
+        foreach(EnemyController enemyController in _enemyList)
+        {
+            enemyController.Pause();
+        }
+
         if (_iDisposable != null)
             _iDisposable.Dispose();
     }
@@ -56,6 +66,7 @@ public class StageEnemySpawnObserver
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.transform.position = this.GetRandamSpawnPosition();
         enemyController.Init(_stageEnemySpawnController.EnemyModel);
+        enemyController.Beginning();
 
         spawnEnemyEvent(enemyController);
         _enemyList.Add(enemyController);

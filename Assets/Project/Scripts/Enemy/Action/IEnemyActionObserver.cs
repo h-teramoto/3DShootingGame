@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public interface  IEnemyActionObserver
+public interface  IEnemyActionObserver : INrcObserver
 {
-    void Action();
-
-    void Pause();
-
     void Init(EnemyController enemyController);
 }
 

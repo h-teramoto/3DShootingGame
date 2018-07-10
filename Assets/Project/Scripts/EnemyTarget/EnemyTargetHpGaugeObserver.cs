@@ -4,11 +4,13 @@ using System;
 using UniRx;
 using UnityEngine.UI;
 
-public class EnemyTargetHpGaugeObserver
+public class EnemyTargetHpGaugeObserver : INrcObserver
 {
     private EnemyTargetController _enemyTargetController;
 
     private GameObject _hpGaugePrefab;
+
+    private GameObject _hpGauge;
 
     private Slider _slider;
 
@@ -18,19 +20,11 @@ public class EnemyTargetHpGaugeObserver
     {
         _enemyTargetController = enemyTargetController;
         _hpGaugePrefab = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_ENEMY_TARGET_HP_GAUGE) as GameObject;
-    }
 
-    public void DisplayAsync()
-    {
-        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
-    }
-
-    private IEnumerator Coroutine()
-    {
-        GameObject hpGauge = GameObject.Instantiate(_hpGaugePrefab,
+        _hpGauge = GameObject.Instantiate(_hpGaugePrefab,
         NrcGameManager.NrcGameStageService.GetNowStageController().transform);
 
-        Slider slider = hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
+        Slider slider = _hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyTargetController.Hp / (float)_enemyTargetController.MaxHp;
 
         _enemyTargetController.EnemyTargetDamageService.EnemyTargetHpChangeEvent += (hp) =>
@@ -38,22 +32,32 @@ public class EnemyTargetHpGaugeObserver
             slider.value = (float)hp / (float)_enemyTargetController.MaxHp;
             if (hp == 0)
             {
-                GameObject.Destroy(hpGauge);
+                GameObject.Destroy(_hpGauge);
                 _iDisposable.Dispose();
             }
         };
 
+    }
+
+    public void BeginningAsync()
+    {
+        _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
+    }
+
+    public void Pause()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
+    }
+
+    private IEnumerator Coroutine()
+    {
         while (true)
         {
-            if (hpGauge == null) yield break;
-            hpGauge.transform.position = _enemyTargetController.transform.position + new Vector3(0, 1, 2);
-            hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
+            if (_hpGauge == null) yield break;
+            _hpGauge.transform.position = _enemyTargetController.transform.position + new Vector3(0, 1, 2);
+            _hpGauge.transform.LookAt(NrcGameManager.GetActiveCamera().transform);
             yield return null;
         }
-
-
     }
-
-
-
-    }
+}

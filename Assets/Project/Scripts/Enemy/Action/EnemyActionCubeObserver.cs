@@ -25,7 +25,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
         };
     }
 
-    public void Action()
+    public void BeginningAsync()
     {
         _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
     }
@@ -57,4 +57,5 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
 
         GameObject.Destroy(explosion);
     }
+
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, INrcController
+{
 
     [SerializeField]
     private GameObject _houdai;
@@ -60,14 +61,14 @@ public class PlayerController : MonoBehaviour {
 
     public void Pause()
     {
-        PlayerMouseMoveObserver.Destroy();
-        PlayerShootObserver.Destroy();
+        PlayerMouseMoveObserver.Pause();
+        PlayerShootObserver.Pause();
     }
 
-    public void Restart()
+    public void Beginning()
     {
-        PlayerMouseMoveObserver.ObserveAsync();
-        PlayerShootObserver.ObserveAsync();
+        PlayerMouseMoveObserver.BeginningAsync();
+        PlayerShootObserver.BeginningAsync();
     }
 }
 

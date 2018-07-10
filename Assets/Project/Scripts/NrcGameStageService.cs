@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using System;
+using UniRx;
 
 public class NrcGameStageService
 {
@@ -12,13 +15,17 @@ public class NrcGameStageService
     private GameUIController _gameUIController;
 
     private int _nowStageId;
+
+    private string _nowStageNm;
+
     private int _clearTime;
 
-    private GameObject _stageGameObject;
+    private IDisposable _iDisposable;
+
     private StageController _stageController;
 
-    public delegate void StageChangeDelegate(StageController stageController);
-    public StageChangeDelegate stageChangeEvent = delegate { };
+    //public delegate void StageChangeDelegate(StageController stageController);
+    //public StageChangeDelegate stageChangeEvent = delegate { };
 
 
     public NrcGameStageService(NrcSceneLoader nrcSceneLoader)
@@ -31,8 +38,8 @@ public class NrcGameStageService
 
         _gameUIController.GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
         {
-            _playerController.Restart();
-            _stageController.Restart();
+            _playerController.Beginning();
+            _stageController.Beginning();
             _gameUIController.GameUICountDownService.StartAsync(_clearTime);
         };
 
@@ -45,32 +52,47 @@ public class NrcGameStageService
         {
             NextStage();
         };
+
+
     }
 
     public void StageLoad(int id)
     {
-        
-        if (_stageGameObject != null)
+        _iDisposable = Observable.FromCoroutine(Observable => Coroutine(id)).Subscribe();
+    }
+
+    private IEnumerator Coroutine(int id)
+    {
+        if (_nowStageNm != null)
         {
-            GameObject.Destroy(_stageGameObject);
+            SceneManager.UnloadSceneAsync(_nowStageNm);
         }
 
         StageModel stageModel = _stageDataBase.GetStageById(id);
         _clearTime = stageModel.ClearTime;
-        _stageGameObject = GameObject.Instantiate(stageModel.Prefab);
-        _stageController = _stageGameObject.GetComponent<StageController>();
+
+        Debug.Log(stageModel.StageNm);
+        AsyncOperation ope = SceneManager.LoadSceneAsync(stageModel.StageNm, LoadSceneMode.Additive);
+        ope.allowSceneActivation = false;
+        while (ope.progress < 0.9f)
+        {
+            yield return null;
+        }
+        ope.allowSceneActivation = true;
+        yield return null;
+
         _stageController.Init();
-
-        stageChangeEvent(_stageController);
-
+        
         _playerController.Pause();
         _stageController.Pause();
 
         //ステージスタート前処理
         _gameUIController.GameUIBeforeStarEffectService.StartAsync(id.ToString());
 
-
+        _nowStageNm = stageModel.StageNm;
         _nowStageId = id;
+
+        yield return null;
     }
 
     public int NextStage()
@@ -81,6 +103,12 @@ public class NrcGameStageService
         _nowStageId++;
         StageLoad(_nowStageId);
         return _nowStageId;
+    }
+
+
+    public void SetNowStageController(StageController stageController)
+    {
+        _stageController = stageController;
     }
 
     public StageController GetNowStageController()

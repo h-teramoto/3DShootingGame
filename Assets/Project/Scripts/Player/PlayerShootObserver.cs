@@ -3,7 +3,7 @@ using System.Collections;
 using UniRx;
 using System;
 
-public class PlayerShootObserver : MonoBehaviour
+public class PlayerShootObserver : INrcObserver
 {
     private PlayerController _playerController;
 
@@ -34,7 +34,7 @@ public class PlayerShootObserver : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public void ObserveAsync()
+    public void BeginningAsync()
     {
         _iDisposable =  Observable.FromCoroutine(Coroutine).Subscribe();
     }
@@ -42,7 +42,7 @@ public class PlayerShootObserver : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public void Destroy()
+    public void Pause()
     {
         if(_iDisposable != null)
             _iDisposable.Dispose();

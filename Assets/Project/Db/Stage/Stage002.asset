@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: Stage002
   m_EditorClassIdentifier: 
   _id: 2
-  _prefab: {fileID: 1435758139533852, guid: d3b8e319439d2f249b87a64a53fa5129, type: 2}
+  _stageNm: Stage002
   _clearTime: 20

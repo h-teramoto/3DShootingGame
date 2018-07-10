@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
-public class StageController : MonoBehaviour
+public class StageController : MonoBehaviour, INrcController
 {
     [SerializeField]
     private GameObject _playerPoint;
@@ -32,38 +33,32 @@ public class StageController : MonoBehaviour
         }
     }
 
+    public void Awake()
+    {
+        NrcGameManager.NrcGameStageService.SetNowStageController(this);
+    }
+
     public void Init()
     {
-    
         _playerController = NrcGameManager.GetPlayerController();
-        _playerController.transform.position = _playerPoint.transform.position;
-
-        foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
-        {
-            sesc.spawnEnemyEvent += (e) =>
-            {
-
-            };
-        }
+        _playerController.transform.position = _playerPoint.transform.position;        
     }
 
     public void Pause()
     {
-        StageEnemyTargetObserver.Destroy();
-
+        StageEnemyTargetObserver.Pause();
         foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
         {
             sesc.Pause();
         }
     }
 
-    public void Restart()
+    public void Beginning()
     {
-        StageEnemyTargetObserver.ObserveAsync();
-
+        StageEnemyTargetObserver.BeginningAsync();
         foreach (StageEnemySpawnController sesc in _stageEnemySpawnControllerList)
         {
-            sesc.Restart();
+            sesc.Beginning();
         }
     }
 }

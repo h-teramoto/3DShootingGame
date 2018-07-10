@@ -10,9 +10,13 @@ public class StageModel : ScriptableObject
     private int _id;
     public int Id { get { return _id; } }
 
+    //[SerializeField]
+    //private GameObject _prefab;
+    //public GameObject Prefab { get { return _prefab; } }
+
     [SerializeField]
-    private GameObject _prefab;
-    public GameObject Prefab { get { return _prefab; } }
+    private string _stageNm;
+    public string StageNm { get { return _stageNm; } }
 
     [SerializeField]
     private int _clearTime;

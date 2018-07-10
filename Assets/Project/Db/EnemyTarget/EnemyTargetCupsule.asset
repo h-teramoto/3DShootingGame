@@ -14,3 +14,4 @@ MonoBehaviour:
   _id: 1000
   _hp: 400
   _prefab: {fileID: 1714602284553562, guid: 6e52b1c8bcd3ed1499f256fa2a2896f8, type: 2}
+  _actionId: 1000

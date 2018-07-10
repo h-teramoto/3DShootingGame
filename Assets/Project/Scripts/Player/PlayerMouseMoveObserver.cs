@@ -7,7 +7,7 @@ using System;
 /// <summary>
 /// 
 /// </summary>
-public class PlayerMouseMoveObserver
+public class PlayerMouseMoveObserver : INrcObserver
 {
     private PlayerController _playerController;
     
@@ -32,12 +32,12 @@ public class PlayerMouseMoveObserver
         _reverse = false;
     }
 
-    public void ObserveAsync()
+    public void BeginningAsync()
     {
         _iDisposable = Observable.FromCoroutine(Coroutine).Subscribe();
     }
 
-    public void Destroy()
+    public void Pause()
     {
         if (_iDisposable != null)
             _iDisposable.Dispose();

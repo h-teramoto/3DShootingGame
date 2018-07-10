@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.AI;
 
-public class EnemyActionObserver
+public class EnemyActionObserver : INrcObserver
 {
     private EnemyController _enemyController;
 
@@ -15,9 +15,9 @@ public class EnemyActionObserver
         _iEnemyActionObserver.Init(_enemyController);
     }
 
-    public void Observe()
+    public void BeginningAsync()
     {
-        _iEnemyActionObserver.Action();
+        _iEnemyActionObserver.BeginningAsync();
     }
 
     public void Pause()

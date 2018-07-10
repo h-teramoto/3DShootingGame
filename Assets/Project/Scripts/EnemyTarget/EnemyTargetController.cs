@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyTargetController : MonoBehaviour
+public class EnemyTargetController : MonoBehaviour, INrcController
 {
     private int _hp;
     public int Hp { get { return _hp; } }
@@ -35,6 +35,19 @@ public class EnemyTargetController : MonoBehaviour
         }
     }
 
+    private EnemyTargetActionObserver _enemyTargetActionObserver;
+    public EnemyTargetActionObserver EnemyTargetActionObserver
+    {
+        get
+        {
+            if(_enemyTargetActionObserver == null)
+            {
+                _enemyTargetActionObserver = new EnemyTargetActionObserver(this);
+            }
+            return _enemyTargetActionObserver;
+        }
+    }
+
     private EnemyTargetModel _enemyTargetModel;
     public EnemyTargetModel EnemyTargetModel { get { return _enemyTargetModel; } }
 
@@ -46,9 +59,6 @@ public class EnemyTargetController : MonoBehaviour
         _hp = EnemyTargetModel.Hp;
 
         _maxHp = _hp;
-
-        EnemyTargetHpGaugeObserver.DisplayAsync();
-
     }
 
     public void Damage(int point)
@@ -58,11 +68,13 @@ public class EnemyTargetController : MonoBehaviour
 
     public void Pause()
     {
-
+        EnemyTargetHpGaugeObserver.Pause();
+        EnemyTargetActionObserver.Pause();
     }
 
-    public void Restart()
+    public void Beginning()
     {
-
+        EnemyTargetHpGaugeObserver.BeginningAsync();
+        EnemyTargetActionObserver.BeginningAsync();
     }
 }

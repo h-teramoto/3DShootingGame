@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StageEnemySpawnController : MonoBehaviour
+public class StageEnemySpawnController : MonoBehaviour, INrcController
 {
     //出現率
     [SerializeField]
@@ -50,11 +50,11 @@ public class StageEnemySpawnController : MonoBehaviour
 
     public void Pause()
     {
-        StageEnemySpawnObserver.Destroy();
+        StageEnemySpawnObserver.Pause();
     }
     
-    public void Restart()
+    public void Beginning()
     {
-        StageEnemySpawnObserver.ObserveAsync();
+        StageEnemySpawnObserver.BeginningAsync();
     }
 }
