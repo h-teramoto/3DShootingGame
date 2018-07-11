@@ -24,8 +24,6 @@ public class NrcGameManager
     private NrcGameDatabaseService _nrcGameDatabaseService;
     public static NrcGameDatabaseService NrcGameDatabaseService { get { return Instance._nrcGameDatabaseService; } }
 
-    
-
 
     /// <summary>
     /// 初期化
@@ -39,7 +37,6 @@ public class NrcGameManager
         Instance._nrcGameScoreService = new NrcGameScoreService(nrcSceneLoader);
         Instance._nrcGameEnemyService = new NrcGameEnemyService(nrcSceneLoader, Instance._nrcGameStageService);
         Instance._nrcGameDatabaseService = new NrcGameDatabaseService(nrcSceneLoader);
-
 
         //ステージの読み込み 
         NrcGameStageService.StageLoad(1);
@@ -72,11 +69,16 @@ public class NrcGameManager
     /// </summary>
     public static void Pause()
     {
-        StageController sc = Instance._nrcGameStageService.GetNowStageController();
+        StageController sc = NrcGameStageService.GetNowStageController();
         if (sc != null) sc.Pause();
 
         Instance._nrcSceneLoader.PlayerController.Pause();
 
         Time.timeScale = 0;
+    }
+
+    public static void GameOver()
+    {
+        Instance.NrcSceneLoader.GameUIController.GameUIGameOverEffectService.StartAsync();
     }
 }

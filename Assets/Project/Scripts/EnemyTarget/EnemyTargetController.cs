@@ -51,6 +51,8 @@ public class EnemyTargetController : MonoBehaviour, INrcController
     private EnemyTargetModel _enemyTargetModel;
     public EnemyTargetModel EnemyTargetModel { get { return _enemyTargetModel; } }
 
+    public delegate void EnemyTargetDeadDelegate(EnemyTargetController enemyTargetController);
+    public EnemyTargetDeadDelegate EnemyTargetDeadEvent = delegate { };
 
     public void Init(EnemyTargetModel enemyTargetModel)
     {
@@ -59,6 +61,17 @@ public class EnemyTargetController : MonoBehaviour, INrcController
         _hp = EnemyTargetModel.Hp;
 
         _maxHp = _hp;
+
+        EnemyTargetDamageService.EnemyTargetHpChangeEvent += (hp) =>
+        {
+            _hp = hp;
+            if (hp == 0)
+            {
+                EnemyTargetDeadEvent(this);
+                Destroy(this.gameObject);
+            }
+        };
+
     }
 
     public void Damage(int point)

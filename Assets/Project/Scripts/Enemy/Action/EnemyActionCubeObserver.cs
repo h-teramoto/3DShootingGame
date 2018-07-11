@@ -23,6 +23,18 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
             Observable.FromCoroutine(observe => Explodison(_enemyController.transform.position)).Subscribe();
             _iDisposable.Dispose();
         };
+
+        NrcEventForwarder nrcEventForwarder = enemyController.GetComponent<NrcEventForwarder>();
+        nrcEventForwarder.OnTriggerStayEvent += (col) =>
+        {
+
+            if(col.gameObject.tag == TagDefine.TAG_ENEMY_TARGET)
+            {
+                EnemyTargetController enemyTargetController = col.gameObject.GetComponent<EnemyTargetController>();
+                enemyTargetController.Damage(1);
+            }
+        };
+
     }
 
     public void BeginningAsync()
@@ -39,6 +51,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
     private IEnumerator Coroutine()
     {
         EnemyTargetController etc = NrcGameManager.NrcGameEnemyService.GetMostNearEnemyTaget(_enemyController);
+        _navMeshAgent.enabled = true;
         _navMeshAgent.SetDestination(etc.transform.position);
 
         while (true)

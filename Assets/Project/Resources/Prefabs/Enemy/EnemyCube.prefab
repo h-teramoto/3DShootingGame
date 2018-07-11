@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 65525576941910998}
   - component: {fileID: 54476178285487646}
   - component: {fileID: 195350348982232584}
+  - component: {fileID: 114553658308165094}
   m_Layer: 0
   m_Name: EnemyCube
   m_TagString: Enemy
@@ -125,6 +126,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d53810dffd1e334089396861a0f10bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114553658308165094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1188060731054466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ec5f31cc18b30947be672c29549a996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &195350348982232584
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -140,7 +152,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: 0.5

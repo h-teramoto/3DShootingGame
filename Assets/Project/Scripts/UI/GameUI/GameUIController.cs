@@ -77,7 +77,20 @@ public class GameUIController : MonoBehaviour
         }
     }
 
-    
+    private GameUIGameOverEffectService _gameUIGameOverEffectService;
+    public GameUIGameOverEffectService GameUIGameOverEffectService
+    {
+        get
+        {
+            if(_gameUIGameOverEffectService == null)
+            {
+                _gameUIGameOverEffectService = new GameUIGameOverEffectService(this);
+            }
+            return _gameUIGameOverEffectService;
+        }
+    }
+
+
 
     /// <summary>
     /// スコアの更新
