@@ -16,7 +16,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
     {
         _enemyController = enemyController;
         _navMeshAgent = _enemyController.GetComponent<NavMeshAgent>();
-        _navMeshAgent.speed = 1;
+        _navMeshAgent.speed = 1.5f;
         _explosion = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_EXPLOSION) as GameObject;
         _enemyController.EnemyDeadEvent += (e) =>
         {

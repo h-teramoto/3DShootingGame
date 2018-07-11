@@ -66,6 +66,7 @@ public class NrcGameStageService
         if (_nowStageNm != null)
         {
             SceneManager.UnloadSceneAsync(_nowStageNm);
+            _stageController = null;
         }
 
         StageModel stageModel = _stageDataBase.GetStageById(id);
@@ -79,8 +80,12 @@ public class NrcGameStageService
             yield return null;
         }
         ope.allowSceneActivation = true;
-        yield return null;
 
+        while (_stageController == null)
+        {
+            yield return null;
+        }
+        
         _stageController.Init();
         
         _playerController.Pause();
