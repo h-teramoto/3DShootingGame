@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System;
 using UniRx;
 
-public class NrcGameStageService
+public class NrcGameStageObserver : INrcObserver
 {
     private NrcSceneLoader _nrcSceneLoader;
 
@@ -24,11 +24,7 @@ public class NrcGameStageService
 
     private StageController _stageController;
 
-    //public delegate void StageChangeDelegate(StageController stageController);
-    //public StageChangeDelegate stageChangeEvent = delegate { };
-
-
-    public NrcGameStageService(NrcSceneLoader nrcSceneLoader)
+    public NrcGameStageObserver(NrcSceneLoader nrcSceneLoader)
     {
         _nrcSceneLoader = nrcSceneLoader;
         _stageDataBase = nrcSceneLoader.StageDataBase;
@@ -36,6 +32,7 @@ public class NrcGameStageService
         _gameUIController = nrcSceneLoader.GameUIController;
         _nowStageId = 1;
 
+        //スタート前カウントダウンが終了したときに呼ばれる
         _gameUIController.GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
         {
             _playerController.Beginning();
@@ -43,22 +40,42 @@ public class NrcGameStageService
             _gameUIController.GameUICountDownService.StartAsync(_clearTime);
         };
 
+        //ステージタイムリミット終了時に呼ばれる
         _gameUIController.GameUICountDownService.GameUICountDownEndEvent += () =>
         {
             _gameUIController.GameUIStageClearEffectService.StartAsync();
         };
 
+        //ステージクリア表示終了時に呼ばれる
         _gameUIController.GameUIStageClearEffectService.GameUIStageClearEffectEndEvent += () =>
         {
             NextStage();
         };
 
+        //EnemyTargetが全滅したときに呼ばれる
+        NrcGameManager.NrcGameEnemyTargetService.EnemyTargetAllDeadEvent += () =>
+        {
+            _gameUIController.Stop();
+            _gameUIController.GameUIGameOverEffectService.StartAsync();
+        };
 
+        //ゲームオーバー表示終了時に呼ばれる
+        _gameUIController.GameUIGameOverEffectService.GameUIGameOverEndEvent += () =>
+        {
+            StageLoad(1);
+        };
     }
+
 
     public void StageLoad(int id)
     {
-        _iDisposable = Observable.FromCoroutine(Observable => Coroutine(id)).Subscribe();
+        _nowStageId = id;
+        BeginningAsync();
+    }
+
+    public void BeginningAsync()
+    {
+        _iDisposable = Observable.FromCoroutine(Observable => Coroutine(_nowStageId)).Subscribe();
     }
 
     private IEnumerator Coroutine(int id)
@@ -71,8 +88,9 @@ public class NrcGameStageService
 
         StageModel stageModel = _stageDataBase.GetStageById(id);
         _clearTime = stageModel.ClearTime;
+        _nowStageNm = stageModel.StageNm;
 
-        Debug.Log(stageModel.StageNm);
+        //ステージシーンの読み込み。
         AsyncOperation ope = SceneManager.LoadSceneAsync(stageModel.StageNm, LoadSceneMode.Additive);
         ope.allowSceneActivation = false;
         while (ope.progress < 0.9f)
@@ -80,12 +98,9 @@ public class NrcGameStageService
             yield return null;
         }
         ope.allowSceneActivation = true;
-
-        while (_stageController == null)
-        {
-            yield return null;
-        }
         
+        //セットされるまで待つ
+        while (_stageController == null) yield return null;
         _stageController.Init();
         
         _playerController.Pause();
@@ -93,9 +108,6 @@ public class NrcGameStageService
 
         //ステージスタート前処理
         _gameUIController.GameUIBeforeStarEffectService.StartAsync(id.ToString());
-
-        _nowStageNm = stageModel.StageNm;
-        _nowStageId = id;
 
         yield return null;
     }
@@ -120,5 +132,12 @@ public class NrcGameStageService
     {
         return _stageController;
     }
+
+    public void Pause()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
+    }
+
 
 }

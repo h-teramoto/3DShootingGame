@@ -4,6 +4,9 @@ using System;
 using TMPro;
 using UniRx;
 
+/// <summary>
+/// ゲームカウント
+/// </summary>
 public class GameUICountDownService
 {
     private GameUIController _gameUIController;
@@ -39,5 +42,11 @@ public class GameUICountDownService
 
         GameUICountDownEndEvent();
         _countDownText.text = "";
+    }
+
+    public void Pause()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
     }
 }

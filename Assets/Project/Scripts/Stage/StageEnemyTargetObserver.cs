@@ -33,7 +33,7 @@ public class StageEnemyTargetObserver : INrcObserver
                 _enemyTargetControllerList.Remove(etc);
                 if(_enemyTargetControllerList.Count < 1)
                 {
-                    NrcGameManager.GameOver();
+                    NrcGameManager.NrcGameEnemyTargetService.EnemyTargetAllDeadEvent();
                 }
             };
 

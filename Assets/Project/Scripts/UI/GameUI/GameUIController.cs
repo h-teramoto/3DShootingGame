@@ -90,6 +90,14 @@ public class GameUIController : MonoBehaviour
         }
     }
 
+    public void Stop()
+    {
+        GameUIBeforeStarEffectService.Pause();
+        GameUIStageClearEffectService.Pause();
+        GameUICountDownService.Pause();
+        GameUIGameOverEffectService.Pause();
+    }
+
 
 
     /// <summary>

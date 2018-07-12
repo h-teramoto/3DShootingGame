@@ -49,4 +49,10 @@ public class GameUIBeforeStartEffectService
         GameUIBeforeStarEffectEndEvent();
         yield return null;
     }
+
+    public void Pause()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
+    }
 }

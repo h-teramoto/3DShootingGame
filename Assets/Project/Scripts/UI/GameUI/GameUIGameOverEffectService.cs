@@ -13,6 +13,9 @@ public class GameUIGameOverEffectService
 
     private TextMeshProUGUI _beforeStartEffectText;
 
+    public delegate void GameUIGameOverEndDelegate();
+    public GameUIGameOverEndDelegate GameUIGameOverEndEvent = delegate { };
+
     public GameUIGameOverEffectService(GameUIController gameUIController)
     {
         _gameUIController = gameUIController;
@@ -29,9 +32,13 @@ public class GameUIGameOverEffectService
         _beforeStartEffectText.text = "Game Over";
         _beforeStartEffectText.fontSize = 50;
         yield return new WaitForSeconds(2);
-
-        SceneManager.LoadScene("Main");
-
+        GameUIGameOverEndEvent();
         yield return null;
+    }
+
+    public void Pause()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
     }
 }

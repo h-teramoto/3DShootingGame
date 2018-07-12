@@ -41,7 +41,9 @@ public class StageController : MonoBehaviour, INrcController
     public void Init()
     {
         _playerController = NrcGameManager.GetPlayerController();
-        _playerController.transform.position = _playerPoint.transform.position;        
+        _playerController.transform.position = _playerPoint.transform.position;
+        _playerController.Houdai.transform.rotation = _playerPoint.transform.rotation;
+
     }
 
     public void Pause()

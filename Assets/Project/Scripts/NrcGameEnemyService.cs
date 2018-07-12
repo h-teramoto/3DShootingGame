@@ -5,9 +5,9 @@ public class NrcGameEnemyService
 {
     private NrcSceneLoader _nrcSceneLoader;
 
-    private NrcGameStageService _nrcGameStageService;
+    private NrcGameStageObserver _nrcGameStageService;
 
-    public NrcGameEnemyService(NrcSceneLoader nrcSceneLoader, NrcGameStageService nrcGameStageService)
+    public NrcGameEnemyService(NrcSceneLoader nrcSceneLoader, NrcGameStageObserver nrcGameStageService)
     {
         _nrcSceneLoader = nrcSceneLoader;
         _nrcGameStageService = nrcGameStageService;

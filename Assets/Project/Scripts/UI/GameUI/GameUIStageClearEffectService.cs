@@ -34,4 +34,10 @@ public class GameUIStageClearEffectService
         GameUIStageClearEffectEndEvent();
         yield return null;
     }
+
+    public void Pause()
+    {
+        if (_iDisposable != null)
+            _iDisposable.Dispose();
+    }
 }

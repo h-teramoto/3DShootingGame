@@ -17,11 +17,11 @@ public class NrcGameCameraService
     {
         _playerController = nrcSceneLoader.PlayerController;
         _nrcSceneLoader = nrcSceneLoader;
-        _mode = CAMERA_MODE.CAMERA_MODE_MAIN;
-        Change(_mode);
+        //_mode = CAMERA_MODE.CAMERA_MODE_MAIN;
+        //Change(_mode);
     }
 
-    private void Change(CAMERA_MODE changeMode)
+    public void Change(CAMERA_MODE changeMode)
     {
         if (changeMode == CAMERA_MODE.CAMERA_MODE_MAIN)
         {
