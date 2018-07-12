@@ -10,6 +10,7 @@ public class StageController : MonoBehaviour, INrcController
 
     [SerializeField]
     private List<StageEnemySpawnController> _stageEnemySpawnControllerList;
+    public List<StageEnemySpawnController> StageEnemySpawnControllerList{ get { return _stageEnemySpawnControllerList;}}
 
     [SerializeField]
     private List<EnemyTargetPointController> _enemyTargetPointControllerList;
@@ -35,7 +36,7 @@ public class StageController : MonoBehaviour, INrcController
 
     public void Awake()
     {
-        NrcGameManager.NrcGameStageService.SetNowStageController(this);
+        NrcGameManager.NrcGameStageObserver.SetNowStageController(this);
     }
 
     public void Init()

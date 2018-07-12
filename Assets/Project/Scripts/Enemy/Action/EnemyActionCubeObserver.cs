@@ -35,6 +35,21 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
             }
         };
 
+        EnemyTargetController etc = NrcGameManager.NrcGameEnemyTargetService.GetMostNearEnemyTaget(_enemyController);
+        if (etc != null)
+        {
+            etc.EnemyTargetDeadEvent += (enemyTarget) =>
+            {
+                etc = NrcGameManager.NrcGameEnemyTargetService.GetMostNearEnemyTaget(_enemyController);
+
+                if(etc != null)
+                    _navMeshAgent.SetDestination(etc.transform.position);
+            };
+
+            _navMeshAgent.enabled = true;
+            _navMeshAgent.SetDestination(etc.transform.position);
+        }
+
     }
 
     public void BeginningAsync()
@@ -50,9 +65,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
 
     private IEnumerator Coroutine()
     {
-        EnemyTargetController etc = NrcGameManager.NrcGameEnemyService.GetMostNearEnemyTaget(_enemyController);
-        _navMeshAgent.enabled = true;
-        _navMeshAgent.SetDestination(etc.transform.position);
+        
 
         while (true)
         {

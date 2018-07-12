@@ -9,6 +9,7 @@ public class StageEnemySpawnObserver : INrcObserver
     private StageEnemySpawnController _stageEnemySpawnController;
 
     private List<EnemyController> _enemyList = new List<EnemyController>();
+    public List<EnemyController> EnemyList { get { return _enemyList; } }
 
     private IDisposable _iDisposable;
 
@@ -61,7 +62,7 @@ public class StageEnemySpawnObserver : INrcObserver
     private void Spawn()
     {
         GameObject enemy = GameObject.Instantiate(_stageEnemySpawnController.EnemyModel.Prefab, 
-            NrcGameManager.NrcGameStageService.GetNowStageController().transform);
+            NrcGameManager.NrcGameStageObserver.GetNowStageController().transform);
 
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.transform.position = this.GetRandamSpawnPosition();

@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 using System;
 using UniRx;
 
+/// <summary>
+/// ステージ制御サービス
+/// </summary>
 public class NrcGameStageObserver : INrcObserver
 {
     private NrcSceneLoader _nrcSceneLoader;
@@ -15,14 +18,12 @@ public class NrcGameStageObserver : INrcObserver
     private GameUIController _gameUIController;
 
     private int _nowStageId;
-
     private string _nowStageNm;
+    private StageController _nowStageController;
 
     private int _clearTime;
 
     private IDisposable _iDisposable;
-
-    private StageController _stageController;
 
     public NrcGameStageObserver(NrcSceneLoader nrcSceneLoader)
     {
@@ -35,26 +36,28 @@ public class NrcGameStageObserver : INrcObserver
         //スタート前カウントダウンが終了したときに呼ばれる
         _gameUIController.GameUIBeforeStarEffectService.GameUIBeforeStarEffectEndEvent += () =>
         {
-            _playerController.Beginning();
-            _stageController.Beginning();
+            CharacterStart();
             _gameUIController.GameUICountDownService.StartAsync(_clearTime);
         };
 
         //ステージタイムリミット終了時に呼ばれる
         _gameUIController.GameUICountDownService.GameUICountDownEndEvent += () =>
         {
+            CharacterPause();
             _gameUIController.GameUIStageClearEffectService.StartAsync();
         };
 
         //ステージクリア表示終了時に呼ばれる
         _gameUIController.GameUIStageClearEffectService.GameUIStageClearEffectEndEvent += () =>
         {
+            CharacterPause();
             NextStage();
         };
 
         //EnemyTargetが全滅したときに呼ばれる
         NrcGameManager.NrcGameEnemyTargetService.EnemyTargetAllDeadEvent += () =>
         {
+            CharacterPause();
             _gameUIController.Stop();
             _gameUIController.GameUIGameOverEffectService.StartAsync();
         };
@@ -62,6 +65,7 @@ public class NrcGameStageObserver : INrcObserver
         //ゲームオーバー表示終了時に呼ばれる
         _gameUIController.GameUIGameOverEffectService.GameUIGameOverEndEvent += () =>
         {
+            CharacterPause();
             StageLoad(1);
         };
     }
@@ -80,31 +84,35 @@ public class NrcGameStageObserver : INrcObserver
 
     private IEnumerator Coroutine(int id)
     {
+        //すでにステージがあれば消す
         if (_nowStageNm != null)
         {
-            SceneManager.UnloadSceneAsync(_nowStageNm);
-            _stageController = null;
+            AsyncOperation ope = SceneManager.UnloadSceneAsync(_nowStageNm);
+            ope.allowSceneActivation = false;
+            while (ope.progress < 0.9f) yield return null;
+            ope.allowSceneActivation = true;
+
+            _nowStageController = null;
         }
 
+        //ステージ情報モデルの取得
         StageModel stageModel = _stageDataBase.GetStageById(id);
         _clearTime = stageModel.ClearTime;
         _nowStageNm = stageModel.StageNm;
 
         //ステージシーンの読み込み。
-        AsyncOperation ope = SceneManager.LoadSceneAsync(stageModel.StageNm, LoadSceneMode.Additive);
-        ope.allowSceneActivation = false;
-        while (ope.progress < 0.9f)
-        {
-            yield return null;
+        { 
+            AsyncOperation ope = SceneManager.LoadSceneAsync(stageModel.StageNm, LoadSceneMode.Additive);
+            ope.allowSceneActivation = false;
+            while (ope.progress < 0.9f) yield return null;
+            ope.allowSceneActivation = true;
         }
-        ope.allowSceneActivation = true;
-        
+
         //セットされるまで待つ
-        while (_stageController == null) yield return null;
-        _stageController.Init();
-        
-        _playerController.Pause();
-        _stageController.Pause();
+        while (_nowStageController == null) yield return null;
+        _nowStageController.Init();
+
+        CharacterPause();
 
         //ステージスタート前処理
         _gameUIController.GameUIBeforeStarEffectService.StartAsync(id.ToString());
@@ -114,23 +122,35 @@ public class NrcGameStageObserver : INrcObserver
 
     public int NextStage()
     {
-        _playerController.Pause();
-        _stageController.Pause();
+        CharacterPause();
 
         _nowStageId++;
+
         StageLoad(_nowStageId);
+
         return _nowStageId;
     }
 
+    private void CharacterPause()
+    {
+        _playerController.Pause();
+        _nowStageController.Pause();
+    }
+
+    private void CharacterStart()
+    {
+        _playerController.Beginning();
+        _nowStageController.Beginning();
+    }
 
     public void SetNowStageController(StageController stageController)
     {
-        _stageController = stageController;
+        _nowStageController = stageController;
     }
 
     public StageController GetNowStageController()
     {
-        return _stageController;
+        return _nowStageController;
     }
 
     public void Pause()

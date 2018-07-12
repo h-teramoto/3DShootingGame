@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NrcGameEnemyService
 {
@@ -11,32 +12,39 @@ public class NrcGameEnemyService
     {
         _nrcSceneLoader = nrcSceneLoader;
         _nrcGameStageService = nrcGameStageService;
-
     }
 
     /// <summary>
-    /// 最もenemyControllerから近いEnemyTargetControllerを返す
+    /// enemyTargetから一番近いEnemyを返す
     /// </summary>
-    /// <param name="enemyController"></param>
+    /// <param name="enemyTargetController"></param>
     /// <returns></returns>
-    public EnemyTargetController GetMostNearEnemyTaget(EnemyController enemyController)
+    public EnemyController GetMostNearEnemy(EnemyTargetController enemyTargetController)
     {
-        EnemyTargetController result = null;
+        EnemyController result = null;
         float tempDistance = float.MaxValue;
 
-        foreach (EnemyTargetController etc in _nrcGameStageService.GetNowStageController().StageEnemyTargetObserver.EnemyTargetControllerList)
+        List<StageEnemySpawnController> stageEnemySpawnControllerList =
+            _nrcGameStageService.GetNowStageController().StageEnemySpawnControllerList;
+
+        foreach(StageEnemySpawnController stageEnemySpawnController in stageEnemySpawnControllerList)
         {
-            
-            float distance = (etc.transform.position - enemyController.transform.position).sqrMagnitude;
-            if (tempDistance > distance)
+            List<EnemyController> enemyControllerList =
+                stageEnemySpawnController.StageEnemySpawnObserver.EnemyList;
+
+            foreach(EnemyController enemyController in enemyControllerList)
             {
-                tempDistance = distance;
-                result = etc;
+                float distance = (enemyController.transform.position - enemyTargetController.transform.position).sqrMagnitude;
+                if (tempDistance > distance)
+                {
+                    tempDistance = distance;
+                    result = enemyController;
+                }
             }
+
         }
 
         return result;
     }
-
 
 }

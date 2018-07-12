@@ -22,7 +22,7 @@ public class EnemyHpGaugeObserver : INrcObserver
         _hpGaugePrefab = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_ENEMY_HP_GAUGE) as GameObject;
 
         _hpGauge = GameObject.Instantiate(_hpGaugePrefab,
-        NrcGameManager.NrcGameStageService.GetNowStageController().transform);
+        NrcGameManager.NrcGameStageObserver.GetNowStageController().transform);
 
         Slider slider = _hpGauge.transform.Find("HpSlider").GetComponent<Slider>();
         slider.value = (float)_enemyController.Hp / (float)_enemyController.MaxHp;

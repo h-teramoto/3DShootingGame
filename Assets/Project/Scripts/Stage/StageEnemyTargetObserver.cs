@@ -16,14 +16,14 @@ public class StageEnemyTargetObserver : INrcObserver
     public StageEnemyTargetObserver(StageController stageController)
     {
         _stageController = stageController;
-        _stageController = NrcGameManager.NrcGameStageService.GetNowStageController();
+        _stageController = NrcGameManager.NrcGameStageObserver.GetNowStageController();
 
         foreach (EnemyTargetPointController enemyTargetPointController in _stageController.EnemyTargetPointControllerList)
         {
             EnemyTargetModel enemyTargetModel = NrcGameManager.NrcGameDatabaseService.GetEnemyTargetModelById(enemyTargetPointController.Id);
 
             GameObject enemyTarget = GameObject.Instantiate(enemyTargetModel.Prefab,
-                NrcGameManager.NrcGameStageService.GetNowStageController().transform);
+                NrcGameManager.NrcGameStageObserver.GetNowStageController().transform);
 
             EnemyTargetController enemyTargetController = enemyTarget.GetComponent<EnemyTargetController>();
             enemyTargetController.transform.position = enemyTargetPointController.transform.position;

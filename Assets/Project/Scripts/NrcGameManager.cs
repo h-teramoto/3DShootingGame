@@ -20,14 +20,15 @@ public class NrcGameManager
         }
     }
 
-    private NrcGameStageObserver _nrcGameStageService;
-    public static NrcGameStageObserver NrcGameStageService {
+    private NrcGameStageObserver _nrcGameStageObserver;
+    public static NrcGameStageObserver NrcGameStageObserver
+    {
         get {
-            if(Instance._nrcGameStageService == null)
+            if(Instance._nrcGameStageObserver == null)
             {
-                Instance._nrcGameStageService = new NrcGameStageObserver(Instance.NrcSceneLoader);
+                Instance._nrcGameStageObserver = new NrcGameStageObserver(Instance.NrcSceneLoader);
             }
-            return Instance._nrcGameStageService;
+            return Instance._nrcGameStageObserver;
         }
     }
 
@@ -47,7 +48,7 @@ public class NrcGameManager
         get {
             if(Instance._nrcGameEnemyService == null)
             {
-                Instance._nrcGameEnemyService = new NrcGameEnemyService(Instance.NrcSceneLoader, NrcGameStageService);
+                Instance._nrcGameEnemyService = new NrcGameEnemyService(Instance.NrcSceneLoader, NrcGameStageObserver);
             }
             return Instance._nrcGameEnemyService;
         }
@@ -83,7 +84,7 @@ public class NrcGameManager
     {
         Instance._nrcSceneLoader = nrcSceneLoader;
         NrcGameCameraService.Change(NrcGameCameraService.CAMERA_MODE.CAMERA_MODE_MAIN);
-        NrcGameStageService.StageLoad(1);
+        NrcGameStageObserver.StageLoad(1);
     }
 
     public static PlayerController GetPlayerController()
@@ -113,7 +114,7 @@ public class NrcGameManager
     /// </summary>
     public static void Pause()
     {
-        StageController sc = NrcGameStageService.GetNowStageController();
+        StageController sc = NrcGameStageObserver.GetNowStageController();
         if (sc != null) sc.Pause();
 
         Instance.NrcSceneLoader.PlayerController.Pause();
