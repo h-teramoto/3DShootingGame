@@ -168,7 +168,7 @@ Prefab:
         type: 2}
       propertyPath: _enemyModel
       value: 
-      objectReference: {fileID: 11400000, guid: 52cad024d22ddce47b0cceaddd31a3ad,
+      objectReference: {fileID: 11400000, guid: 8fa7cc33b05f18b49b57e1a521dec522,
         type: 2}
     - target: {fileID: 4287180354876854, guid: d3b8e319439d2f249b87a64a53fa5129, type: 2}
       propertyPath: m_LocalRotation.x
@@ -201,7 +201,7 @@ Prefab:
     - target: {fileID: 114310219565224800, guid: d3b8e319439d2f249b87a64a53fa5129,
         type: 2}
       propertyPath: _maxSpawnCount
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3b8e319439d2f249b87a64a53fa5129, type: 2}

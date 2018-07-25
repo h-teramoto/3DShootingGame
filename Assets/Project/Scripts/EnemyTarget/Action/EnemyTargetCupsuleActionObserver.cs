@@ -21,6 +21,7 @@ public class EnemyTargetCupsuleActionObserver : IEnemyTargetActionObserver
         _enemyTargetController.EnemyTargetDeadEvent += (etc) =>
         {
             Observable.FromCoroutine(observe => Explodison(_enemyTargetController.transform.position)).Subscribe();
+
         };
     }
 

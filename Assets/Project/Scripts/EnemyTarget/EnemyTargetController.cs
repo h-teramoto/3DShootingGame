@@ -67,8 +67,12 @@ public class EnemyTargetController : MonoBehaviour, INrcController
             _hp = hp;
             if (hp == 0)
             {
-                EnemyTargetDeadEvent(this);
-                Destroy(this.gameObject);
+                if(this.gameObject != null)
+                {
+                    EnemyTargetDeadEvent(this);
+                    Destroy(this.gameObject);
+                }
+
             }
         };
 
