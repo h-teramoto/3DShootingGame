@@ -21,11 +21,18 @@ public class NrcGameEnemyTargetService
     /// <returns></returns>
     public EnemyTargetController GetMostNearEnemyTaget(EnemyController enemyController)
     {
+        if (enemyController == null) return null;
+
         EnemyTargetController result = null;
         float tempDistance = float.MaxValue;
 
         foreach (EnemyTargetController etc in NrcGameManager.NrcGameStageObserver.GetNowStageController().StageEnemyTargetObserver.EnemyTargetControllerList)
         {
+            if (etc == null) continue;
+
+
+
+
 
             float distance = (etc.transform.position - enemyController.transform.position).sqrMagnitude;
             if (tempDistance > distance)

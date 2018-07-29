@@ -38,12 +38,14 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
         EnemyTargetController etc = NrcGameManager.NrcGameEnemyTargetService.GetMostNearEnemyTaget(_enemyController);
         if (etc != null)
         {
-            etc.EnemyTargetDeadEvent += (enemyTarget) =>
+            etc.EnemyTargetDeadAfterEvent += () =>
             {
-                etc = NrcGameManager.NrcGameEnemyTargetService.GetMostNearEnemyTaget(_enemyController);
+                if(_enemyController != null) {    
+                    etc = NrcGameManager.NrcGameEnemyTargetService.GetMostNearEnemyTaget(_enemyController);
 
-                if(etc != null)
-                    _navMeshAgent.SetDestination(etc.transform.position);
+                    if(etc != null)
+                        _navMeshAgent.SetDestination(etc.transform.position);
+                }
             };
 
             _navMeshAgent.enabled = true;

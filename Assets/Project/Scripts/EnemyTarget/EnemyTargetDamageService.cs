@@ -15,6 +15,11 @@ public class EnemyTargetDamageService
 
     public void Damage(int point)
     {
+        if(_enemyTargetController.Hp == 0)
+        {
+            return;
+        }
+
         int hp = _enemyTargetController.Hp;
         hp -= point;
         if (hp < 0)

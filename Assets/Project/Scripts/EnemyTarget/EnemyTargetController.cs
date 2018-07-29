@@ -51,8 +51,13 @@ public class EnemyTargetController : MonoBehaviour, INrcController
     private EnemyTargetModel _enemyTargetModel;
     public EnemyTargetModel EnemyTargetModel { get { return _enemyTargetModel; } }
 
-    public delegate void EnemyTargetDeadDelegate(EnemyTargetController enemyTargetController);
-    public EnemyTargetDeadDelegate EnemyTargetDeadEvent = delegate { };
+    public delegate void EnemyTargetDeadAfterDelegate();
+    public EnemyTargetDeadAfterDelegate EnemyTargetDeadAfterEvent = delegate { };
+
+    public delegate void EnemyTargetDeadBeforeDelegate(EnemyTargetController enemyTargetController);
+    public EnemyTargetDeadBeforeDelegate EnemyTargetDeadBeforeEvent = delegate { };
+
+
 
     public void Init(EnemyTargetModel enemyTargetModel)
     {
@@ -67,11 +72,9 @@ public class EnemyTargetController : MonoBehaviour, INrcController
             _hp = hp;
             if (hp == 0)
             {
-                if(this.gameObject != null)
-                {
-                    EnemyTargetDeadEvent(this);
-                    Destroy(this.gameObject);
-                }
+                EnemyTargetDeadBeforeEvent(this);
+                GameObject.Destroy(this.gameObject);
+                EnemyTargetDeadAfterEvent();
 
             }
         };

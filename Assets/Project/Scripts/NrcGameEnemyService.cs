@@ -34,6 +34,22 @@ public class NrcGameEnemyService
 
             foreach(EnemyController enemyController in enemyControllerList)
             {
+                //Vector3 initForward = enemyTargetController.transform.forward;
+                //enemyTargetController.transform.LookAt(enemyController.transform);
+                //Ray ray = new Ray(enemyTargetController.transform.position, enemyTargetController.transform.forward);
+                //RaycastHit hit;
+                //Debug.DrawRay(ray.origin, ray.direction * 30.0f, Color.red, 0.0f);
+                //if (Physics.Raycast(ray, out hit, 1000.0f))
+                //{
+                //    enemyTargetController.transform.LookAt(initForward);
+
+                //    if (hit.collider.tag != TagDefine.TAG_ENEMY)
+                //    {
+                //        continue;
+                //    }
+                //}
+                
+
                 float distance = (enemyController.transform.position - enemyTargetController.transform.position).sqrMagnitude;
                 if (tempDistance > distance)
                 {

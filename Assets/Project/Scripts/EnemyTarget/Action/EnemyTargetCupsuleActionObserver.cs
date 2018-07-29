@@ -18,7 +18,7 @@ public class EnemyTargetCupsuleActionObserver : IEnemyTargetActionObserver
         _explosion = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_EXPLOSION) as GameObject;
         _bullet = NrcResourceManager.GetGameObject(ResourceDefine.PREFAB_BULLET) as GameObject;
 
-        _enemyTargetController.EnemyTargetDeadEvent += (etc) =>
+        _enemyTargetController.EnemyTargetDeadBeforeEvent += (etc) =>
         {
             Observable.FromCoroutine(observe => Explodison(_enemyTargetController.transform.position)).Subscribe();
 
@@ -34,6 +34,8 @@ public class EnemyTargetCupsuleActionObserver : IEnemyTargetActionObserver
     {
         while (true)
         {
+            if (_enemyTargetController == null) yield  break;
+
             EnemyController enemyController = NrcGameManager.NrcGameEnemyService.GetMostNearEnemy(_enemyTargetController);
             if(enemyController != null)
             {

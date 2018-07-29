@@ -28,7 +28,7 @@ public class StageEnemyTargetObserver : INrcObserver
             EnemyTargetController enemyTargetController = enemyTarget.GetComponent<EnemyTargetController>();
             enemyTargetController.transform.position = enemyTargetPointController.transform.position;
             enemyTargetController.Init(enemyTargetModel);
-            enemyTargetController.EnemyTargetDeadEvent += (etc) =>
+            enemyTargetController.EnemyTargetDeadBeforeEvent += (etc) =>
             {
                 _enemyTargetControllerList.Remove(etc);
                 if(_enemyTargetControllerList.Count < 1)
