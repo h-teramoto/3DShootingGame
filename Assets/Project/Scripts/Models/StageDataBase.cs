@@ -14,4 +14,9 @@ public class StageDataBase : ScriptableObject
     {
         return list.Find(target => target.Id == id);
     }
+
+    public int GetSize()
+    {
+        return list.Count;
+    }
 }

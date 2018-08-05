@@ -51,7 +51,18 @@ public class NrcGameStageObserver : INrcObserver
         _gameUIController.GameUIStageClearEffectService.GameUIStageClearEffectEndEvent += () =>
         {
             CharacterPause();
-            NextStage();
+
+            int lastStageNum =_stageDataBase.GetSize();
+            if (lastStageNum == _nowStageId)
+            {
+                _gameUIController.GameUIGameClearEffectService.StartAsync();
+            }
+            else
+            {
+                NextStage();
+            }
+
+            
         };
 
         //EnemyTargetが全滅したときに呼ばれる
@@ -67,6 +78,16 @@ public class NrcGameStageObserver : INrcObserver
         {
             CharacterPause();
             StageLoad(1);
+        };
+
+        _gameUIController.GameUIGameClearEffectService.GameUIGameClearEndEvent += () =>
+        {        //ステージシーンの読み込み。
+            {
+
+                AsyncOperation ope = SceneManager.LoadSceneAsync("Title", LoadSceneMode.Single);
+ 
+            }
+
         };
     }
 
@@ -130,6 +151,8 @@ public class NrcGameStageObserver : INrcObserver
 
         return _nowStageId;
     }
+
+
 
     private void CharacterPause()
     {

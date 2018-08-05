@@ -90,12 +90,28 @@ public class GameUIController : MonoBehaviour
         }
     }
 
+    private GameUIGameClearEffectService _gameUIGameClearEffectService;
+    public GameUIGameClearEffectService GameUIGameClearEffectService
+    {
+        get
+        {
+            if (_gameUIGameClearEffectService == null)
+            {
+                _gameUIGameClearEffectService = new GameUIGameClearEffectService(this);
+            }
+            return _gameUIGameClearEffectService;
+        }
+    }
+
+    
+
     public void Stop()
     {
         GameUIBeforeStarEffectService.Pause();
         GameUIStageClearEffectService.Pause();
         GameUICountDownService.Pause();
         GameUIGameOverEffectService.Pause();
+        GameUIGameClearEffectService.Pause();
     }
 
 

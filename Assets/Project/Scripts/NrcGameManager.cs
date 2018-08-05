@@ -82,6 +82,13 @@ public class NrcGameManager
     /// <param name="nrcSceneLoader"></param>
     public static void Init(NrcSceneLoader nrcSceneLoader)
     {
+        if(Instance != null)
+        {
+            Instance = null;
+            
+        }
+        Instance = new NrcGameManager();
+
         Instance._nrcSceneLoader = nrcSceneLoader;
         NrcGameCameraService.Change(NrcGameCameraService.CAMERA_MODE.CAMERA_MODE_MAIN);
         NrcGameStageObserver.StageLoad(1);

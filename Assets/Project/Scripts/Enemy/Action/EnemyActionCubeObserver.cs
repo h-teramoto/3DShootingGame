@@ -21,6 +21,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
         _enemyController.EnemyDeadEvent += (e) =>
         {
             Observable.FromCoroutine(observe => Explodison(_enemyController.transform.position)).Subscribe();
+            if(_iDisposable != null)
             _iDisposable.Dispose();
         };
 
@@ -28,7 +29,7 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
         nrcEventForwarder.OnTriggerStayEvent += (col) =>
         {
 
-            if(col.gameObject.tag == TagDefine.TAG_ENEMY_TARGET)
+            if(col.gameObject.tag == TagDefine.TAG_ENEMY_TARGET && _iDisposable != null)
             {
                 EnemyTargetController enemyTargetController = col.gameObject.GetComponent<EnemyTargetController>();
                 enemyTargetController.Damage(1);
@@ -61,8 +62,14 @@ public class EnemyActionCubeObserver : IEnemyActionObserver
 
     public void Pause()
     {
-        if (_iDisposable != null)
+        if(_navMeshAgent != null)
+        {
+            _navMeshAgent.SetDestination(_enemyController.transform.position);
+        }
+        if (_iDisposable != null) { 
             _iDisposable.Dispose();
+            _iDisposable = null;
+        }
     }
 
     private IEnumerator Coroutine()

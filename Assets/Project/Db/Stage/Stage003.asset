@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 3
   _stageNm: Stage003
-  _clearTime: 60
+  _clearTime: 5
